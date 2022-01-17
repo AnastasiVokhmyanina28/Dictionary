@@ -22,12 +22,10 @@ import java.util.regex.Pattern;
     private HashMap<String,String>  keyConditions;
     private String path;
     private String languageType;
-    private String valueType;
-
+   
     public Dictionary(String path, String languageType){
         this.path = path;
-        this.valueType = PATTERN_TYPE_ONE;
-        this.languageType = languageType;
+              this.languageType = languageType;
        this.keyConditions = new HashMap<String, String>(){{
            put(LANGUAGE_TYPE_ONE, PATTERN_TYPE_TWO );
            put(LANGUAGE_TYPE_TWO,PATTERN_TYPE_THREE );
@@ -107,7 +105,7 @@ import java.util.regex.Pattern;
            }
 
            public void  addAnEntry(String key, String value){
-               boolean matches = Pattern.matches(this.valueType, value);
+               boolean matches = Pattern.matches(PATTERN_TYPE_ONE, value);
                if (keyCheck(key) && matches) {
                  localMap.put(key, value);
                  System.out.println(ADD_KEY);
