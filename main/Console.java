@@ -102,11 +102,13 @@ public class Console {
                     String value = scanner.next();
                     dictionary.addAnEntry(key, value);
                     break;
-                case 5:
+                 case 5:
+                    dictionary.saveData();
                     int nextDictionary = choiceDictionary();
                     createDictionary(nextDictionary);
                     break;
                 case 6:
+                    dictionary.saveData();
                     this.isRunningConsole = true;
                     break;
                 default:

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
     public class Dictionary {
-    public static final String PATTERN_TYPE_ONE = "[а-яА-Я]+";
+    public static final String PATTERN_TYPE_ONE = "[а-яёА-ЯЁ]+";
     public static final String PATTERN_TYPE_TWO ="^[a-zA-Z]{4}$" ;
     public static final String PATTERN_TYPE_THREE = "^[0-9]{5}$" ;
     public static final String LANGUAGE_TYPE_ONE = "first";
@@ -88,7 +88,6 @@ import java.util.regex.Pattern;
         else {
             System.out.println(NO_KEY);
         }
-        saveData();
         }
 
         public void pairReading() {
@@ -116,8 +115,7 @@ import java.util.regex.Pattern;
                else {
                 System.out.println(SIMILARITY_TO_THE_PATTERN);
                   }
-                saveData();
-            }
+               }
 
             private boolean keyCheck(String key) {
                 String value = keyConditions.get(this.languageType);
