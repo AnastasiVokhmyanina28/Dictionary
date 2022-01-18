@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
     public class Dictionary {
     public static final String PATTERN_TYPE_ONE = "[а-яёА-ЯЁ]+";
-    public static final String PATTERN_TYPE_TWO ="^[a-zA-Z]{4}$" ;
+    public static final String PATTERN_TYPE_TWO ="^[A-Za-z]{4}$" ;
     public static final String PATTERN_TYPE_THREE = "^[0-9]{5}$" ;
     public static final String LANGUAGE_TYPE_ONE = "first";
     public static final String LANGUAGE_TYPE_TWO = "second";
@@ -105,8 +105,8 @@ import java.util.regex.Pattern;
            }
 
            public void  addAnEntry(String key, String value){
-               boolean matches = Pattern.matches(PATTERN_TYPE_ONE, value);
-               if (keyCheck(key) && matches) {
+		
+               if (keyCheck(key) && valueCheck(value)) {
                  localMap.put(key, value);
                  System.out.println(ADD_KEY);
                  }
@@ -116,9 +116,14 @@ import java.util.regex.Pattern;
                }
 
             private boolean keyCheck(String key) {
-                String value = keyConditions.get(this.languageType);
-                return Pattern.matches(value, key);
-           }
+       	     String value = keyConditions.get(this.languageType);
+             return Pattern.matches(value, key);
+    }
+
+    private boolean valueCheck(String value){
+        return Pattern.matches(PATTERN_TYPE_ONE, value);
+    }
+	    
         }
 
 
