@@ -113,8 +113,10 @@ public class Dictionary {
         }
     }
 
-    public void  addAnEntry(String key, String value){
-        if (keyCheck(key) && valueCheck(value) ) {
+    public void  addAnEntry(String key, String value) {
+        String a = valueCondition.get(LANGUAGE_TYPE_THREE);
+        boolean matches = Pattern.matches(a,value );
+        if (keyCheck(key) && matches) {
             localMap.put(key, value);
             System.out.println(ADD_KEY);
         }
@@ -128,8 +130,9 @@ public class Dictionary {
         return Pattern.matches(value, key);
     }
 
-    private boolean valueCheck(String value){
-    String a = valueCondition.get(LANGUAGE_TYPE_THREE);
-        return Pattern.matches(a, value);
+
     }
-}
+
+
+
+

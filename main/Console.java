@@ -36,13 +36,13 @@ public class Console {
 
     public void start() throws InterruptedException {
 
-            int dictionarySelection = this.choiceDictionary();
-            this.createDictionary(dictionarySelection);
-            while (!isRunningConsole) {
+        int dictionarySelection = this.choiceDictionary();
+        this.createDictionary(dictionarySelection);
+        while (!isRunningConsole) {
             int choiceOfActions = this.choiceOfAction();
             this.choice(choiceOfActions);
-            }
-            }
+        }
+    }
 
     public int choiceDictionary() {
         System.out.println(SELECT_DICTIONARY);
@@ -53,18 +53,18 @@ public class Console {
     }
 
     private void createDictionary(int chosenAction) throws InterruptedException{
-            switch (chosenAction) {
-                case 1:
-                    this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_ONE), Dictionary.LANGUAGE_TYPE_ONE);
-                    break;
-                case 2:
-                    this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_TWO), Dictionary.LANGUAGE_TYPE_TWO);
-                    break;
-                default:
-                    System.out.println(NO_COMMAND);
-                    start();
+        switch (chosenAction) {
+            case 1:
+                this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_ONE), Dictionary.LANGUAGE_TYPE_ONE);
+                break;
+            case 2:
+                this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_TWO), Dictionary.LANGUAGE_TYPE_TWO);
+                break;
+            default:
+                System.out.println(NO_COMMAND);
+                start();
 
-            }
+        }
     }
 
     public int choiceOfAction(){
@@ -81,43 +81,42 @@ public class Console {
 
     private void choice(int chosenAction) throws InterruptedException {
 
-            switch (chosenAction) {
-                case 1:
-                    dictionary.pairReading();
-                    break;
-                case 2:
-                    System.out.println(ENTER_KEY);
-                    String userKey = scanner.next();
-                    dictionary.removeRecord(userKey);
-                    break;
-                case 3:
-                    System.out.println(ENTER_KEY);
-                    String usKey = scanner.next();
-                    dictionary.recordSearch(usKey);
-                    break;
-                case 4:
-                    System.out.println(ENTER_KEY);
-                    String key = scanner.next();
-                    System.out.println(ENTER_VALUE);
-                    String value = scanner.next();
-                    dictionary.addAnEntry(key, value);
-                    break;
-                 case 5:
-                    dictionary.saveData();
-                    int nextDictionary = choiceDictionary();
-                    createDictionary(nextDictionary);
-                    break;
-                case 6:
-                    dictionary.saveData();
-                    this.isRunningConsole = true;
-                    break;
-                default:
-                    System.out.println(NO_COMMAND);
-                    break;
-            }
+        switch (chosenAction) {
+            case 1:
+                dictionary.pairReading();
+                break;
+            case 2:
+                System.out.println(ENTER_KEY);
+                String userKey = scanner.next();
+                dictionary.removeRecord(userKey);
+                break;
+            case 3:
+                System.out.println(ENTER_KEY);
+                String usKey = scanner.next();
+                dictionary.recordSearch(usKey);
+                break;
+            case 4:
+                System.out.println(ENTER_KEY);
+                String key = scanner.next();
+                System.out.println(ENTER_VALUE);
+                String value = scanner.next();
+                dictionary.addAnEntry(key, value);
+                break;
+            case 5:
+                dictionary.saveData();
+                int nextDictionary = choiceDictionary();
+                createDictionary(nextDictionary);
+                break;
+            case 6:
+                dictionary.saveData();
+                this.isRunningConsole = true;
+                break;
+            default:
+                System.out.println(NO_COMMAND);
+                break;
         }
     }
-
+}
 
 
 
