@@ -26,7 +26,7 @@ public class Console {
     private HashMap<String, String> allDicts;
     private boolean isRunningConsole = false;
 
-    public Console(){ //конструктор
+    public Console(){ 
         scanner = new Scanner(System.in);
         allDicts = new HashMap<String, String>(){{
             put(Dictionary.LANGUAGE_TYPE_ONE, LANGUAGE_PATH_ONE ) ;
