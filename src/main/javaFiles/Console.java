@@ -1,13 +1,15 @@
-package main;
+package src.main.javaFiles;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Console {
-    public static final String LANGUAGE_PATH_ONE = "main/Dictionary.txt" ;
-    public static final String LANGUAGE_PATH_TWO = "main/digitalDictionary.txt";
+
     public static final String SPLIT_CHAR = ":";
     public static final String NO_COMMAND = "There is no such command. Try again!";
+    public static final String KEY_DELETE = "The key has been successfully deleted!";
     public static final String ENTER_KEY = "Please enter the key";
     public static final String ENTER_VALUE = "Please enter the value";
     public static final String SELECT_DICTIONARY= "Select dictionary";
@@ -26,23 +28,26 @@ public class Console {
     private HashMap<String, String> allDicts;
     private boolean isRunningConsole = false;
 
-    public Console(){ 
+    public Console(){
         scanner = new Scanner(System.in);
         allDicts = new HashMap<String, String>(){{
-            put(Dictionary.LANGUAGE_TYPE_ONE, LANGUAGE_PATH_ONE ) ;
-            put(Dictionary.LANGUAGE_TYPE_TWO, LANGUAGE_PATH_TWO);
+
+            put(Dictionary.LANGUAGE_TYPE_ONE, Dictionary.LANGUAGE_PATH_ONE ) ;
+            put(Dictionary.LANGUAGE_TYPE_TWO, Dictionary.LANGUAGE_PATH_TWO);
         }};
     }
 
-    public void start() throws InterruptedException {
+    public void start()  {
 
-        int dictionarySelection = this.choiceDictionary();
-        this.createDictionary(dictionarySelection);
-        while (!isRunningConsole) {
-            int choiceOfActions = this.choiceOfAction();
-            this.choice(choiceOfActions);
+            int dictionarySelection = this.choiceDictionary();
+            this.createDictionary(dictionarySelection);
+            while (!isRunningConsole) {
+                int choiceOfActions = this.choiceOfAction();
+                this.choice(choiceOfActions);
         }
-    }
+        }
+
+
 
     public int choiceDictionary() {
         System.out.println(SELECT_DICTIONARY);
@@ -52,17 +57,18 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void createDictionary(int chosenAction) throws InterruptedException{
+    private void createDictionary(int chosenAction) {
         switch (chosenAction) {
-            case 1:
-                this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_ONE), Dictionary.LANGUAGE_TYPE_ONE);
-                break;
-            case 2:
-                this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_TWO), Dictionary.LANGUAGE_TYPE_TWO);
-                break;
-            default:
-                System.out.println(NO_COMMAND);
-                start();
+                case 1:
+                    this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_ONE), Dictionary.LANGUAGE_TYPE_ONE);
+                    break;
+                case 2:
+                    this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_TWO), Dictionary.LANGUAGE_TYPE_TWO);
+                    break;
+                default:
+                  System.out.println(NO_COMMAND);
+                    start();
+
 
         }
     }
@@ -79,28 +85,38 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void choice(int chosenAction) throws InterruptedException {
+    private void choice(int chosenAction){
 
-        switch (chosenAction) {
+        switch (chosenAction)  {
             case 1:
-                dictionary.pairReading();
+                for (Map.Entry<String, String> entry : dictionary.getLocalMap().entrySet()) {
+                    System.out.println(entry.getKey() + SPLIT_CHAR + entry.getValue());
+                }
+
                 break;
             case 2:
                 System.out.println(ENTER_KEY);
                 String userKey = scanner.next();
-                dictionary.removeRecord(userKey);
+                try {
+                    dictionary.removeRecord(userKey);
+                    System.out.println(KEY_DELETE);
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+
                 break;
             case 3:
                 System.out.println(ENTER_KEY);
                 String usKey = scanner.next();
-                dictionary.recordSearch(usKey);
+                System.out.println( dictionary.recordSearch(usKey));
                 break;
             case 4:
                 System.out.println(ENTER_KEY);
                 String key = scanner.next();
                 System.out.println(ENTER_VALUE);
                 String value = scanner.next();
-                dictionary.addAnEntry(key, value);
+                System.out.println(dictionary.addAnEntry(key, value));
                 break;
             case 5:
                 dictionary.saveData();
@@ -117,3 +133,4 @@ public class Console {
         }
     }
 }
+

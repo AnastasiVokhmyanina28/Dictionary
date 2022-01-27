@@ -1,6 +1,9 @@
-cd main
+set DIR_PROJECT=src/main/classes
+del /s %DIR_BIN%\*.class >NUL
+cd src/main/javaFiles
 chcp 65001
-javac *.java
+javac -d ../classes *.java
 cd..
-java main.Dict
+cd classes
+java src.main.javaFiles.Dict
 pause
