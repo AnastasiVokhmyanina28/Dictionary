@@ -1,7 +1,5 @@
 package src.main.javaFiles;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -23,24 +21,24 @@ public class Console {
     public static final String ADD_ENTRY = "\t4 Adding an entry";
     public static final String CHANGE_THE_DICTIONARY = "\t5 Change the dictionary";
     public static final String EXIT = "\t6 Logout";
+
     private Scanner scanner;
     private Dictionary dictionary;
-    private HashMap<String, String> allDicts;
+    //private FileHandling fileHandling;
+    private Map<String, Dictionary> dictionaries;
     private boolean isRunningConsole = false;
 
-    public Console(){
-        scanner = new Scanner(System.in);
-        allDicts = new HashMap<String, String>(){{
 
-            put(Dictionary.LANGUAGE_TYPE_ONE, Dictionary.LANGUAGE_PATH_ONE ) ;
-            put(Dictionary.LANGUAGE_TYPE_TWO, Dictionary.LANGUAGE_PATH_TWO);
-        }};
+
+    public Console(Map<String, Dictionary> dictionaries){
+
+        scanner = new Scanner(System.in);
+        this.dictionaries = dictionaries;
     }
 
     public void start()  {
-
-            int dictionarySelection = this.choiceDictionary();
-            this.createDictionary(dictionarySelection);
+        int dictionarySelection = this.menuChoiceDictionary();
+        this.choiseDictionary(dictionarySelection);
             while (!isRunningConsole) {
                 int choiceOfActions = this.choiceOfAction();
                 this.choice(choiceOfActions);
@@ -49,7 +47,7 @@ public class Console {
 
 
 
-    public int choiceDictionary() {
+    public int menuChoiceDictionary() {
         System.out.println(SELECT_DICTIONARY);
         System.out.println(DICTIONARY_TYPE_ONE);
         System.out.println(DICTIONARY_TYPE_TWO);
@@ -57,17 +55,19 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void createDictionary(int chosenAction) {
+    private void choiseDictionary(int chosenAction) {
         switch (chosenAction) {
-                case 1:
-                    this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_ONE), Dictionary.LANGUAGE_TYPE_ONE);
-                    break;
-                case 2:
-                    this.dictionary = new Dictionary(allDicts.get(Dictionary.LANGUAGE_TYPE_TWO), Dictionary.LANGUAGE_TYPE_TWO);
-                    break;
-                default:
-                  System.out.println(NO_COMMAND);
-                    start();
+            case 1:
+                this.dictionary =  dictionaries.get(DictionaryType.LANGUAGE_TYPE_ONE);
+            //    this.fileHandling = new FileHandling(DictionaryType.LANGUAGE_PATH_ONE, dictionary.getLocalMap());
+                break;
+            case 2:
+                this.dictionary =  dictionaries.get(DictionaryType.LANGUAGE_TYPE_TWO);
+            //    this.fileHandling = new FileHandling(DictionaryType.LANGUAGE_PATH_TWO, dictionary.getLocalMap());
+                break;
+            default:
+                System.out.println(NO_COMMAND);
+                start();
 
 
         }
@@ -89,8 +89,8 @@ public class Console {
 
         switch (chosenAction)  {
             case 1:
-                for (Map.Entry<String, String> entry : dictionary.getLocalMap().entrySet()) {
-                    System.out.println(entry.getKey() + SPLIT_CHAR + entry.getValue());
+                for (String key : dictionary.getLocalMap().keySet()) {
+                    System.out.println(key + SPLIT_CHAR + dictionary.getLocalMap().get(key));
                 }
 
                 break;
@@ -119,12 +119,12 @@ public class Console {
                 System.out.println(dictionary.addAnEntry(key, value));
                 break;
             case 5:
-                dictionary.saveData();
-                int nextDictionary = choiceDictionary();
-                createDictionary(nextDictionary);
+               dictionary.getFileHandling().saveData();
+                int nextDictionary = menuChoiceDictionary();
+                choiseDictionary(nextDictionary);
                 break;
             case 6:
-                dictionary.saveData();
+               dictionary.getFileHandling().saveData();
                 this.isRunningConsole = true;
                 break;
             default:
@@ -133,4 +133,3 @@ public class Console {
         }
     }
 }
-
