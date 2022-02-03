@@ -21,10 +21,8 @@ public class Console {
     public static final String ADD_ENTRY = "\t4 Adding an entry";
     public static final String CHANGE_THE_DICTIONARY = "\t5 Change the dictionary";
     public static final String EXIT = "\t6 Logout";
-
     private Scanner scanner;
     private Dictionary dictionary;
-    //private FileHandling fileHandling;
     private Map<String, Dictionary> dictionaries;
     private boolean isRunningConsole = false;
 
@@ -59,11 +57,9 @@ public class Console {
         switch (chosenAction) {
             case 1:
                 this.dictionary =  dictionaries.get(DictionaryType.LANGUAGE_TYPE_ONE);
-            //    this.fileHandling = new FileHandling(DictionaryType.LANGUAGE_PATH_ONE, dictionary.getLocalMap());
                 break;
             case 2:
                 this.dictionary =  dictionaries.get(DictionaryType.LANGUAGE_TYPE_TWO);
-            //    this.fileHandling = new FileHandling(DictionaryType.LANGUAGE_PATH_TWO, dictionary.getLocalMap());
                 break;
             default:
                 System.out.println(NO_COMMAND);
