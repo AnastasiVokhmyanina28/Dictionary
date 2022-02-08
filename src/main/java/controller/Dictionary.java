@@ -1,9 +1,9 @@
-package src.main.javaFiles;
-
-
+package controller;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import config.DictionaryType;
+import model.FileHandling;
 
 public class Dictionary {
     public static final String SPLIT_CHAR = ":";

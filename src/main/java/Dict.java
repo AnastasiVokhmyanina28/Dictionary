@@ -1,8 +1,9 @@
-package src.main.javaFiles;
-
-import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
+import config.DictionaryType;
+import controller.Dictionary;
+import model.FileHandling;
+import view.Console;
 
 public class Dict {
 

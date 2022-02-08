@@ -1,7 +1,7 @@
-package src.main.javaFiles;
-
+package model;
 import java.io.*;
 import java.util.Map;
+import view.Console;
 
 public class FileHandling {
     private Map<String, String> localMap;

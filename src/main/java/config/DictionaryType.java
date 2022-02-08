@@ -1,5 +1,4 @@
-package src.main.javaFiles;
-
+package config;
 public  class DictionaryType {
     public static final String LANGUAGE_PATH_ONE = "../resources/Dictionary.txt";
     public static final String LANGUAGE_PATH_TWO = "../resources/digitalDictionary.txt";
