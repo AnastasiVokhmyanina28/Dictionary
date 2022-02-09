@@ -1,7 +1,8 @@
-package src.main.javaFiles;
-
+package view;
 import java.util.Map;
 import java.util.Scanner;
+import controller.Dictionary;
+import config.DictionaryType;
 
 public class Console {
 
