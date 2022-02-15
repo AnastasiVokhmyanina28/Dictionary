@@ -7,25 +7,19 @@ import view.Console;
 
 public class Dict {
 
-    public static void main(String[] args)  {
-       Map<String, Dictionary> dictionaries;
+    public static void main(String[] args) {
+        Map<String, Dictionary> dictionaries;
         dictionaries = new HashMap<>();
-        dictionaries.put(DictionaryType.LANGUAGE_TYPE_ONE, creationOne()) ;
-        dictionaries.put(DictionaryType.LANGUAGE_TYPE_TWO, creationTwo()) ;
+        for (DictionaryType dictionaryType : DictionaryType.values()) {
+            dictionaries.put(dictionaryType.getNUMBER(), creationOne(dictionaryType));
+        }
 
         Console dictionaryConsole = new Console(dictionaries);
         dictionaryConsole.start();
     }
 
-    public static Dictionary creationOne(){
-        Map<String,String> localMap = new HashMap<>();
-        return new Dictionary(DictionaryType.LANGUAGE_PATH_ONE , DictionaryType.LANGUAGE_TYPE_ONE, new FileHandling(DictionaryType.LANGUAGE_PATH_ONE, localMap).getData());
+    public static Dictionary creationOne(DictionaryType dictionaryType) {
+        Map<String, String> localMap = new HashMap<>();
+        return new Dictionary(dictionaryType.getDICTIONARY_PATH(), dictionaryType.getNUMBER(), new FileHandling(dictionaryType.getDICTIONARY_PATH(), localMap).getData());
     }
-
-    public static Dictionary creationTwo(){
-        Map<String,String> localMap = new HashMap<>();
-        return new Dictionary(DictionaryType.LANGUAGE_PATH_TWO, DictionaryType.LANGUAGE_TYPE_TWO , new FileHandling(DictionaryType.LANGUAGE_PATH_TWO, localMap).getData());
-
-    }
-
 }
