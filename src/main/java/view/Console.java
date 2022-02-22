@@ -55,10 +55,10 @@ public class Console {
     private void choiseDictionary(int chosenAction) {
         switch (chosenAction) {
             case 1:
-                this.dictionary = dictionaries.get(DictionaryType.DICTIONARY_ONE.getNUMBER());
+                this.dictionary = dictionaries.get(DictionaryType.DICTIONARY_ONE.getNumber());
                 break;
             case 2:
-                this.dictionary = dictionaries.get(DictionaryType.DICTIONARY_TWO.getNUMBER());
+                this.dictionary = dictionaries.get(DictionaryType.DICTIONARY_TWO.getNumber());
                 break;
             default:
                 System.out.println(NO_COMMAND);

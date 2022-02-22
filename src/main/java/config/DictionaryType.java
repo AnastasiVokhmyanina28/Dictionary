@@ -4,35 +4,34 @@ public enum DictionaryType {
     DICTIONARY_ONE("1","^[a-zA-Z]{4}$", "[а-яёА-ЯЁ]+", "../resources/Dictionary.txt"),
     DICTIONARY_TWO("2","^[0-9]{5}$", "[а-яёА-ЯЁ]+", "../resources/digitalDictionary.txt");
 
-    private final String NUMBER;
-    private final String PATTERN_KEY;
-    private final String PATTERN_VALUE;
-    private final String DICTIONARY_PATH;
+    private final String number;
+    private final String patternKey;
+    private final String patternValue;
+    private final String dictionaryPath;
 
-    public String getNUMBER() {
-        return NUMBER;
+    public String getNumber() {
+        return number;
     }
 
-    public String getPATTERN_KEY() {
-        return PATTERN_KEY;
+    public String getPatternKey() {
+        return patternKey;
     }
 
-    public String getPATTERN_VALUE() {
-        return PATTERN_VALUE;
+    public String getPatternValue() {
+        return patternValue;
     }
 
-    public String getDICTIONARY_PATH() {
-        return DICTIONARY_PATH;
+    public String getDictionaryPath() {
+        return dictionaryPath;
     }
 
 
-    DictionaryType(String NUMBER, String PATTERN_KEY, String PATTERN_VALUE, String DICTIONARY_PATH) {
-        this.NUMBER = NUMBER;
-        this.PATTERN_KEY = PATTERN_KEY;
-        this.PATTERN_VALUE = PATTERN_VALUE;
-        this.DICTIONARY_PATH = DICTIONARY_PATH;
+    DictionaryType(String number, String patternKey, String patternValue, String dictionaryPath) {
+        this.number = number;
+        this.patternKey = patternKey;
+        this.patternValue = patternValue;
+        this.dictionaryPath = dictionaryPath;
     }
 
 }
-
 

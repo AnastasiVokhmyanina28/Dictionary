@@ -28,8 +28,8 @@ public class Dictionary {
         this.languageType = languageType;
         this.fileHandling = new FileHandling(path, localMap);
         this.keyConditions = new HashMap<String, String>() {{
-            put(DictionaryType.DICTIONARY_ONE.getDICTIONARY_PATH(), DictionaryType.DICTIONARY_ONE.getPATTERN_KEY());
-            put(DictionaryType.DICTIONARY_TWO.getDICTIONARY_PATH(), DictionaryType.DICTIONARY_TWO.getPATTERN_KEY());
+            put(DictionaryType.DICTIONARY_ONE.getNumber(), DictionaryType.DICTIONARY_ONE.getPatternKey());
+            put(DictionaryType.DICTIONARY_TWO.getNumber(), DictionaryType.DICTIONARY_TWO.getPatternKey());
 
         }};
 
@@ -62,7 +62,7 @@ public class Dictionary {
 
 
     public String addAnEntry(String key, String value) {
-        boolean matches = Pattern.matches(DictionaryType.DICTIONARY_ONE.getPATTERN_VALUE(), value);
+        boolean matches = Pattern.matches(DictionaryType.DICTIONARY_ONE.getPatternValue(), value);
         if (keyCheck(key) && matches) {
             localMap.put(key, value);
             return ADD_KEY;
