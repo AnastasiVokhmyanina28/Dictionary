@@ -1,6 +1,10 @@
 package controller;
 import java.util.HashMap;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.util.Map;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Pattern;
 import config.DictionaryType;
 import model.FileHandling;
@@ -13,13 +17,10 @@ public class Dictionary {
     public static final String KEY_DOES_NOT_EXIST = "This key does not exist!";
     private Map<String, String> localMap;
     private FileHandling fileHandling;
-    private HashMap<String, String> keyConditions;
     private String path;
     private String languageType;
 
-    public FileHandling getFileHandling() {
-        return fileHandling;
-    }
+
 
 
     public Dictionary(String path, String languageType, Map<String, String> localMap) {
@@ -27,11 +28,7 @@ public class Dictionary {
         this.localMap = localMap;
         this.languageType = languageType;
         this.fileHandling = new FileHandling(path, localMap);
-        this.keyConditions = new HashMap<String, String>() {{
-            put(DictionaryType.DICTIONARY_ONE.getNumber(), DictionaryType.DICTIONARY_ONE.getPatternKey());
-            put(DictionaryType.DICTIONARY_TWO.getNumber(), DictionaryType.DICTIONARY_TWO.getPatternKey());
 
-        }};
 
         fileHandling.getData();
     }
@@ -72,8 +69,38 @@ public class Dictionary {
     }
 
     private boolean keyCheck(String key) {
-        String value = keyConditions.get(this.languageType);
-        return Pattern.matches(value, key);
+        boolean fth = false;
+        for (DictionaryType dictionaryType : DictionaryType.values()) {
+            String value = dictionaryType.getPatternKey();
+            boolean dfg = this.languageType.equals(dictionaryType.getNumber());
+            if (dfg == true) {
+                Pattern dfgd = Pattern.compile(value);
+                fth  = dfgd.matcher(key).matches();
+                break;
+            }
+        }
+            return fth;
+    }
+
+    public void saveData() {
+        File file = new File(path);
+        BufferedWriter bf = null;
+        try {
+            bf = new BufferedWriter(new FileWriter(file));
+            for (Map.Entry<String, String> entry : localMap.entrySet()) {
+                bf.write(entry.getKey() + Console.SPLIT_CHAR + entry.getValue());
+                bf.newLine();
+            }
+            bf.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bf.close();
+            } catch (Exception e) {
+
+            }
+        }
     }
 
 }

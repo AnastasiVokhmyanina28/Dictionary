@@ -53,20 +53,17 @@ public class Console {
     }
 
     private void choiseDictionary(int chosenAction) {
-        switch (chosenAction) {
-            case 1:
-                this.dictionary = dictionaries.get(DictionaryType.DICTIONARY_ONE.getNumber());
-                break;
-            case 2:
-                this.dictionary = dictionaries.get(DictionaryType.DICTIONARY_TWO.getNumber());
-                break;
-            default:
-                System.out.println(NO_COMMAND);
-                start();
 
+        for (DictionaryType dictionaryType : DictionaryType.values()) {
+            boolean ch = dictionaryType.getNumber().equals(Integer.toString(chosenAction));
+            if (ch == true) {
+                this.dictionary = dictionaries.get(dictionaryType.getNumber());
+                break;
+            }
 
         }
     }
+
 
     public int choiceOfAction() {
         System.out.println(SELECT_THE_COMMAND + SPLIT_CHAR);
@@ -113,12 +110,12 @@ public class Console {
                 System.out.println(dictionary.addAnEntry(key, value));
                 break;
             case 5:
-                dictionary.getFileHandling().saveData();
+                dictionary.saveData();
                 int nextDictionary = menuChoiceDictionary();
                 choiseDictionary(nextDictionary);
                 break;
             case 6:
-                dictionary.getFileHandling().saveData();
+                dictionary.saveData();
                 this.isRunningConsole = true;
                 break;
             default:

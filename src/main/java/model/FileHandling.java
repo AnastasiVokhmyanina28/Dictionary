@@ -31,24 +31,5 @@ public class FileHandling {
         return localMap;
     }
 
-    public void saveData() {
-        File file = new File(path);
-        BufferedWriter bf = null;
-        try {
-            bf = new BufferedWriter(new FileWriter(file));
-            for (Map.Entry<String, String> entry : localMap.entrySet()) {
-                bf.write(entry.getKey() + Console.SPLIT_CHAR + entry.getValue());
-                bf.newLine();
-            }
-            bf.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                bf.close();
-            } catch (Exception e) {
 
-            }
-        }
-    }
 }
