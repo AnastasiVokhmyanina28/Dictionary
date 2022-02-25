@@ -22,14 +22,14 @@ public class Console {
     public static final String ADD_ENTRY = "\t4 Adding an entry";
     public static final String CHANGE_THE_DICTIONARY = "\t5 Change the dictionary";
     public static final String EXIT = "\t6 Logout";
-
+    private DictionaryType dictionaryType;
     private Scanner scanner;
     private Dictionary dictionary;
-    private Map<String, Dictionary> dictionaries;
+    private Map<Integer, Dictionary> dictionaries;
     private boolean isRunningConsole = false;
 
 
-    public Console(Map<String, Dictionary> dictionaries) {
+    public Console(Map<Integer, Dictionary> dictionaries) {
 
         scanner = new Scanner(System.in);
         this.dictionaries = dictionaries;
@@ -55,8 +55,8 @@ public class Console {
     private void choiseDictionary(int chosenAction) {
 
         for (DictionaryType dictionaryType : DictionaryType.values()) {
-            boolean ch = dictionaryType.getNumber().equals(Integer.toString(chosenAction));
-            if (ch == true) {
+            boolean comparison = dictionaryType.getNumber().equals(chosenAction);
+            if (comparison == true) {
                 this.dictionary = dictionaries.get(dictionaryType.getNumber());
                 break;
             }
@@ -110,12 +110,12 @@ public class Console {
                 System.out.println(dictionary.addAnEntry(key, value));
                 break;
             case 5:
-                dictionary.saveData();
+                dictionary.getSaveData();
                 int nextDictionary = menuChoiceDictionary();
                 choiseDictionary(nextDictionary);
                 break;
             case 6:
-                dictionary.saveData();
+                dictionary.getSaveData();
                 this.isRunningConsole = true;
                 break;
             default:

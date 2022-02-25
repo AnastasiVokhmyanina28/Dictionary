@@ -8,16 +8,16 @@ import view.Console;
 public class Dict {
 
     public static void main(String[] args) {
-        Map<String, Dictionary> dictionaries = new HashMap<>();
+        Map<Integer, Dictionary> dictionaries = new HashMap<>();
         for (DictionaryType dictionaryType : DictionaryType.values()) {
-            dictionaries.put(dictionaryType.getNumber(), creationOne(dictionaryType));
+            dictionaries.put(dictionaryType.getNumber(), creation(dictionaryType));
         }
 
         Console dictionaryConsole = new Console(dictionaries);
         dictionaryConsole.start();
     }
 
-    public static Dictionary creationOne(DictionaryType dictionaryType) {
+    public static Dictionary creation(DictionaryType dictionaryType) {
         Map<String, String> localMap = new HashMap<>();
         String  dictionaryPath  = dictionaryType.getDictionaryPath();
         var data =  new FileHandling(dictionaryType.getDictionaryPath(), localMap).getData();

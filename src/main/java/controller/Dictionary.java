@@ -1,10 +1,6 @@
 package controller;
 import java.util.HashMap;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.util.Map;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.regex.Pattern;
 import config.DictionaryType;
 import model.FileHandling;
@@ -18,12 +14,21 @@ public class Dictionary {
     private Map<String, String> localMap;
     private FileHandling fileHandling;
     private String path;
-    private String languageType;
+    private Integer languageType;
+
+    public FileHandling getFileHandling() {
+        return fileHandling;
+    }
+
+    public void getSaveData() {
+        fileHandling.saveData();
+    }
 
 
+    
 
 
-    public Dictionary(String path, String languageType, Map<String, String> localMap) {
+    public Dictionary(String path, Integer languageType, Map<String, String> localMap) {
         this.path = path;
         this.localMap = localMap;
         this.languageType = languageType;
@@ -69,38 +74,16 @@ public class Dictionary {
     }
 
     private boolean keyCheck(String key) {
-        boolean fth = false;
+        boolean check = false;
         for (DictionaryType dictionaryType : DictionaryType.values()) {
             String value = dictionaryType.getPatternKey();
-            boolean dfg = this.languageType.equals(dictionaryType.getNumber());
-            if (dfg == true) {
-                Pattern dfgd = Pattern.compile(value);
-                fth  = dfgd.matcher(key).matches();
+            boolean numberComparison = languageType.equals(dictionaryType.getNumber());
+            if (numberComparison == true) {
+                Pattern pattern = Pattern.compile(value);
+                check = pattern.matcher(key).matches();
                 break;
             }
         }
-            return fth;
+        return check;
     }
-
-    public void saveData() {
-        File file = new File(path);
-        BufferedWriter bf = null;
-        try {
-            bf = new BufferedWriter(new FileWriter(file));
-            for (Map.Entry<String, String> entry : localMap.entrySet()) {
-                bf.write(entry.getKey() + Console.SPLIT_CHAR + entry.getValue());
-                bf.newLine();
-            }
-            bf.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                bf.close();
-            } catch (Exception e) {
-
-            }
-        }
-    }
-
 }
