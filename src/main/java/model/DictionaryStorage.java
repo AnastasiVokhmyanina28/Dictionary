@@ -3,11 +3,11 @@ import java.io.*;
 import java.util.Map;
 import view.Console;
 
-public class FileHandling {
+public class DictionaryStorage {
     private Map<String, String> localMap;
     private String path;
 
-    public FileHandling(String path, Map<String, String> localMap) {
+    public DictionaryStorage(String path, Map<String, String> localMap) {
         this.localMap = localMap;
         this.path = path;
     }

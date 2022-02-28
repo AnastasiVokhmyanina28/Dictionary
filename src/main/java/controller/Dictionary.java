@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import config.DictionaryType;
-import model.FileHandling;
+import model.DictionaryStorage;
 import view.Console;
 
 public class Dictionary {
@@ -12,30 +12,21 @@ public class Dictionary {
     public static final String ADD_KEY = "The key has been successfully added!";
     public static final String KEY_DOES_NOT_EXIST = "This key does not exist!";
     private Map<String, String> localMap;
-    private FileHandling fileHandling;
-    private String path;
-    private Integer languageType;
+    private DictionaryStorage dictionaryStorage;
+    private DictionaryType dictionaryType;
 
-    public FileHandling getFileHandling() {
-        return fileHandling;
+
+
+
+    public void getSavedData() {
+        dictionaryStorage.saveData();
     }
 
-    public void getSaveData() {
-        fileHandling.saveData();
-    }
-
-
-    
-
-
-    public Dictionary(String path, Integer languageType, Map<String, String> localMap) {
-        this.path = path;
+    public Dictionary(String path, DictionaryType dictionaryType, Map<String, String> localMap) {
         this.localMap = localMap;
-        this.languageType = languageType;
-        this.fileHandling = new FileHandling(path, localMap);
-
-
-        fileHandling.getData();
+        this.dictionaryType = dictionaryType;
+        this.dictionaryStorage = new DictionaryStorage(path, localMap);
+        dictionaryStorage.getData();
     }
 
 
@@ -74,16 +65,7 @@ public class Dictionary {
     }
 
     private boolean keyCheck(String key) {
-        boolean check = false;
-        for (DictionaryType dictionaryType : DictionaryType.values()) {
-            String value = dictionaryType.getPatternKey();
-            boolean numberComparison = languageType.equals(dictionaryType.getNumber());
-            if (numberComparison == true) {
-                Pattern pattern = Pattern.compile(value);
-                check = pattern.matcher(key).matches();
-                break;
-            }
-        }
-        return check;
+        String patKey =  dictionaryType.getPatternKey();
+        return Pattern.matches(patKey, key);
     }
 }

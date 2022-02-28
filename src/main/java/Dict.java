@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import config.DictionaryType;
 import controller.Dictionary;
-import model.FileHandling;
+import model.DictionaryStorage;
 import view.Console;
 
 public class Dict {
@@ -20,7 +20,7 @@ public class Dict {
     public static Dictionary creation(DictionaryType dictionaryType) {
         Map<String, String> localMap = new HashMap<>();
         String  dictionaryPath  = dictionaryType.getDictionaryPath();
-        var data =  new FileHandling(dictionaryType.getDictionaryPath(), localMap).getData();
-        return new Dictionary(dictionaryPath, dictionaryType.getNumber(),data);
+        var data =  new DictionaryStorage(dictionaryType.getDictionaryPath(), localMap).getData();
+        return new Dictionary(dictionaryPath, dictionaryType,data);
     }
 }

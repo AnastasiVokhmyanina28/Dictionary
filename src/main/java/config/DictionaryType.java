@@ -1,7 +1,7 @@
 package config;
 public enum DictionaryType {
 
-    DICTIONARY_ONE(1, "^[a-zA-Z]{4}$", "[а-яёА-ЯЁ]+", "../resources/Dictionary.txt"),
+  DICTIONARY_ONE(1, "^[a-zA-Z]{4}$", "[а-яёА-ЯЁ]+",  "../resources/Dictionary.txt"),
     DICTIONARY_TWO(2, "^[0-9]{5}$", "[а-яёА-ЯЁ]+", "../resources/digitalDictionary.txt");
 
     private final Integer number;
@@ -32,4 +32,14 @@ public enum DictionaryType {
         this.patternValue = patternValue;
         this.dictionaryPath = dictionaryPath;
     }
+
+
+    public static String gainingKey() {
+        String value = "";
+        for (DictionaryType dictionaryType : DictionaryType.values()) {
+            value = dictionaryType.getPatternKey();
+        }
+        return value;
+    }
+    
 }

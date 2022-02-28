@@ -22,7 +22,6 @@ public class Console {
     public static final String ADD_ENTRY = "\t4 Adding an entry";
     public static final String CHANGE_THE_DICTIONARY = "\t5 Change the dictionary";
     public static final String EXIT = "\t6 Logout";
-    private DictionaryType dictionaryType;
     private Scanner scanner;
     private Dictionary dictionary;
     private Map<Integer, Dictionary> dictionaries;
@@ -37,7 +36,7 @@ public class Console {
 
     public void start() {
         int dictionarySelection = this.menuChoiceDictionary();
-        this.choiseDictionary(dictionarySelection);
+        chooseDictionary(dictionarySelection);
         while (!isRunningConsole) {
             int choiceOfActions = this.choiceOfAction();
             this.choice(choiceOfActions);
@@ -52,18 +51,9 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void choiseDictionary(int chosenAction) {
-
-        for (DictionaryType dictionaryType : DictionaryType.values()) {
-            boolean comparison = dictionaryType.getNumber().equals(chosenAction);
-            if (comparison == true) {
-                this.dictionary = dictionaries.get(dictionaryType.getNumber());
-                break;
+    private void chooseDictionary(int chosenAction) {
+                this.dictionary = dictionaries.get(chosenAction);
             }
-
-        }
-    }
-
 
     public int choiceOfAction() {
         System.out.println(SELECT_THE_COMMAND + SPLIT_CHAR);
@@ -110,12 +100,12 @@ public class Console {
                 System.out.println(dictionary.addAnEntry(key, value));
                 break;
             case 5:
-                dictionary.getSaveData();
+                dictionary.getSavedData();
                 int nextDictionary = menuChoiceDictionary();
-                choiseDictionary(nextDictionary);
+                chooseDictionary(nextDictionary);
                 break;
             case 6:
-                dictionary.getSaveData();
+                dictionary.getSavedData();
                 this.isRunningConsole = true;
                 break;
             default:
