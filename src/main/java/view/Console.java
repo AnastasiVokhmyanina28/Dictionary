@@ -69,7 +69,7 @@ public class Console {
 
     private void choice(int chosenAction) {
 
-        switch (chosenAction) {
+         switch (chosenAction) {
             case 1:
                 for (String key : dictionary.getLocalMap().keySet()) {
                     System.out.println(key + SPLIT_CHAR + dictionary.getLocalMap().get(key));
@@ -85,7 +85,7 @@ public class Console {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-
+                dictionary.saveData();
                 break;
             case 3:
                 System.out.println(ENTER_KEY);
@@ -98,6 +98,7 @@ public class Console {
                 System.out.println(ENTER_VALUE);
                 String value = scanner.next();
                 System.out.println(dictionary.addAnEntry(key, value));
+                dictionary.saveData();
                 break;
             case 5:
                 dictionary.saveData();
