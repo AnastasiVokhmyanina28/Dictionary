@@ -32,14 +32,5 @@ public enum DictionaryType {
         this.patternValue = patternValue;
         this.dictionaryPath = dictionaryPath;
     }
-
-
-    public static String gainingKey() {
-        String value = "";
-        for (DictionaryType dictionaryType : DictionaryType.values()) {
-            value = dictionaryType.getPatternKey();
-        }
-        return value;
-    }
     
 }
