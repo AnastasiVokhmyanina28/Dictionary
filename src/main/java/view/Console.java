@@ -100,12 +100,12 @@ public class Console {
                 System.out.println(dictionary.addAnEntry(key, value));
                 break;
             case 5:
-                dictionary.getSavedData();
+                dictionary.saveData();
                 int nextDictionary = menuChoiceDictionary();
                 chooseDictionary(nextDictionary);
                 break;
             case 6:
-                dictionary.getSavedData();
+                dictionary.saveData();
                 this.isRunningConsole = true;
                 break;
             default:

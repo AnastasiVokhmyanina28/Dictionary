@@ -18,7 +18,7 @@ public class Dictionary {
 
 
 
-    public void SaveData() {
+  public void saveData() {
         dictionaryStorage.saveData();
     }
 
