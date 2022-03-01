@@ -11,7 +11,7 @@ public class Console {
     public static final String KEY_DELETE = "The key has been successfully deleted!";
     public static final String ENTER_KEY = "Please enter the key";
     public static final String ENTER_VALUE = "Please enter the value";
-    public static final String SELECT_DICTIONARY= "Select dictionary";
+    public static final String SELECT_DICTIONARY = "Select dictionary";
     public static final String SELECT = "Your choice";
     public static final String SELECT_THE_COMMAND = "Select the action you want to perform with this dictionary ";
     public static final String DICTIONARY_TYPE_ONE = "\t1 English-Russian dictionary";
@@ -24,27 +24,24 @@ public class Console {
     public static final String EXIT = "\t6 Logout";
     private Scanner scanner;
     private Dictionary dictionary;
-    private Map<String, Dictionary> dictionaries;
+    private Map<Integer, Dictionary> dictionaries;
     private boolean isRunningConsole = false;
 
 
-
-    public Console(Map<String, Dictionary> dictionaries){
+    public Console(Map<Integer, Dictionary> dictionaries) {
 
         scanner = new Scanner(System.in);
         this.dictionaries = dictionaries;
     }
 
-    public void start()  {
+    public void start() {
         int dictionarySelection = this.menuChoiceDictionary();
-        this.choiseDictionary(dictionarySelection);
-            while (!isRunningConsole) {
-                int choiceOfActions = this.choiceOfAction();
-                this.choice(choiceOfActions);
+        chooseDictionary(dictionarySelection);
+        while (!isRunningConsole) {
+            int choiceOfActions = this.choiceOfAction();
+            this.choice(choiceOfActions);
         }
-        }
-
-
+    }
 
     public int menuChoiceDictionary() {
         System.out.println(SELECT_DICTIONARY);
@@ -54,23 +51,11 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void choiseDictionary(int chosenAction) {
-        switch (chosenAction) {
-            case 1:
-                this.dictionary =  dictionaries.get(DictionaryType.LANGUAGE_TYPE_ONE);
-                break;
-            case 2:
-                this.dictionary =  dictionaries.get(DictionaryType.LANGUAGE_TYPE_TWO);
-                break;
-            default:
-                System.out.println(NO_COMMAND);
-                start();
+    private void chooseDictionary(int chosenAction) {
+                this.dictionary = dictionaries.get(chosenAction);
+            }
 
-
-        }
-    }
-
-    public int choiceOfAction(){
+    public int choiceOfAction() {
         System.out.println(SELECT_THE_COMMAND + SPLIT_CHAR);
         System.out.println(READ);
         System.out.println(DELETE);
@@ -82,9 +67,9 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void choice(int chosenAction){
+    private void choice(int chosenAction) {
 
-        switch (chosenAction)  {
+        switch (chosenAction) {
             case 1:
                 for (String key : dictionary.getLocalMap().keySet()) {
                     System.out.println(key + SPLIT_CHAR + dictionary.getLocalMap().get(key));
@@ -97,8 +82,7 @@ public class Console {
                 try {
                     dictionary.removeRecord(userKey);
                     System.out.println(KEY_DELETE);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
 
@@ -106,7 +90,7 @@ public class Console {
             case 3:
                 System.out.println(ENTER_KEY);
                 String usKey = scanner.next();
-                System.out.println( dictionary.recordSearch(usKey));
+                System.out.println(dictionary.recordSearch(usKey));
                 break;
             case 4:
                 System.out.println(ENTER_KEY);
@@ -116,12 +100,12 @@ public class Console {
                 System.out.println(dictionary.addAnEntry(key, value));
                 break;
             case 5:
-               dictionary.getFileHandling().saveData();
+                dictionary.saveData();
                 int nextDictionary = menuChoiceDictionary();
-                choiseDictionary(nextDictionary);
+                chooseDictionary(nextDictionary);
                 break;
             case 6:
-               dictionary.getFileHandling().saveData();
+                dictionary.saveData();
                 this.isRunningConsole = true;
                 break;
             default:
