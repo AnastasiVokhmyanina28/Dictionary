@@ -1,5 +1,6 @@
 package model;
 import java.io.*;
+import java.util.Scanner;
 import java.util.Map;
 import view.Console;
 
@@ -12,25 +13,27 @@ public class DictionaryStorage {
         this.path = path;
     }
 
-    public Map<String, String> getData() {
+     public Map<String, String> getData(){
+
         try {
             File file = new File(path);
-            FileReader fr = new FileReader(file);
-            BufferedReader reader = new BufferedReader(fr);
-            String line = reader.readLine();
-            while (line != null) {
-                String[] del = line.split(Console.SPLIT_CHAR);
-                localMap.put(del[0], del[1]);
-                line = reader.readLine();
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                parseLine(scanner.nextLine());
             }
+            scanner.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return localMap;
     }
+    
+    private  Map<String, String>  parseLine (String line) {
 
+        String[] lineParts = line.split(Console.SPLIT_CHAR);// разделение строки
+        localMap.put(lineParts[0], lineParts[1]);
+        return localMap;
+    }
     public void saveData() {
         File file = new File(path);
         BufferedWriter bf = null;
