@@ -2,6 +2,7 @@ package model;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Map;
+import config.DictionaryType;
 import view.Console;
 
 public class DictionaryStorage {
@@ -30,7 +31,7 @@ public class DictionaryStorage {
     
     private  Map<String, String>  parseLine (String line) {
 
-        String[] lineParts = line.split(Console.SPLIT_CHAR);// разделение строки
+        String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
         return localMap;
     }
@@ -40,7 +41,7 @@ public class DictionaryStorage {
         try {
             bf = new BufferedWriter(new FileWriter(file));
             for (Map.Entry<String, String> entry : localMap.entrySet()) {
-                bf.write(entry.getKey() + Console.SPLIT_CHAR + entry.getValue());
+                bf.write(entry.getKey() + DictionaryType.getSymbol() + entry.getValue());
                 bf.newLine();
             }
             bf.flush();

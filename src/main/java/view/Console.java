@@ -3,10 +3,10 @@ import java.util.Map;
 import java.util.Scanner;
 import controller.Dictionary;
 import config.DictionaryType;
+ 
 
 public class Console {
 
-    public static final String SPLIT_CHAR = ":";
     public static final String NO_COMMAND = "There is no such command. Try again!";
     public static final String KEY_DELETE = "The key has been successfully deleted!";
     public static final String ENTER_KEY = "Please enter the key";
@@ -47,32 +47,32 @@ public class Console {
         System.out.println(SELECT_DICTIONARY);
         System.out.println(DICTIONARY_TYPE_ONE);
         System.out.println(DICTIONARY_TYPE_TWO);
-        System.out.println(SELECT + SPLIT_CHAR);
+        System.out.println(SELECT + DictionaryType.getSymbol());
         return scanner.nextInt();
     }
 
     private void chooseDictionary(int chosenAction) {
-                this.dictionary = dictionaries.get(chosenAction);
-            }
+        this.dictionary = dictionaries.get(chosenAction);
+    }
 
     public int choiceOfAction() {
-        System.out.println(SELECT_THE_COMMAND + SPLIT_CHAR);
+        System.out.println(SELECT_THE_COMMAND + DictionaryType.getSymbol());
         System.out.println(READ);
         System.out.println(DELETE);
         System.out.println(SEARCH);
         System.out.println(ADD_ENTRY);
         System.out.println(CHANGE_THE_DICTIONARY);
         System.out.println(EXIT);
-        System.out.println(SELECT + SPLIT_CHAR);
+        System.out.println(SELECT + DictionaryType.getSymbol());
         return scanner.nextInt();
     }
 
     private void choice(int chosenAction) {
 
-         switch (chosenAction) {
+        switch (chosenAction) {
             case 1:
                 for (String key : dictionary.getLocalMap().keySet()) {
-                    System.out.println(key + SPLIT_CHAR + dictionary.getLocalMap().get(key));
+                    System.out.println(key + DictionaryType.getSymbol() + dictionary.getLocalMap().get(key));
                 }
 
                 break;
