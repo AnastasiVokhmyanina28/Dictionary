@@ -30,7 +30,7 @@ public class Console {
 
     public Console(Map<Integer, Dictionary> dictionaries) {
 
-        scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in, "windows-1251");
         this.dictionaries = dictionaries;
     }
 

@@ -1,4 +1,4 @@
-chcp 1251 >nul
+chcp 1251 
 if exist src/main/classes\ (
 set DIR_PROJECT=src/main/classes
 del /s %DIR_BIN%\*.class >NUL
