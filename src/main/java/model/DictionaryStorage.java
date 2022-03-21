@@ -27,9 +27,8 @@ public class DictionaryStorage {
         }
         return localMap;
     }
-
-    private Map<String, String> parseLine(String line) {
-
+    
+    private  Map<String, String>  parseLine (String line) {
         String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
         return localMap;

@@ -29,7 +29,6 @@ public class FileOperation implements ChoiceOfAction {
     }
 
     public String addAnEntry(String key, String value) {
-
         if (keyCheck(key) && valueCheck(value)) {
             BufferedWriter bufferedWriter = null;
             try {
@@ -37,7 +36,6 @@ public class FileOperation implements ChoiceOfAction {
                 bufferedWriter = new BufferedWriter(fileWriter);
                 bufferedWriter.write( key + DictionaryType.getSymbol() + value + "\n");
                 bufferedWriter.flush();
-
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -52,7 +50,6 @@ public class FileOperation implements ChoiceOfAction {
         }
     }
 
-
     private boolean keyCheck(String key) {
         String patKey =  dictionaryType.getPatternKey();
         return Pattern.matches(patKey, key);
@@ -62,7 +59,6 @@ public class FileOperation implements ChoiceOfAction {
         String patValue =  dictionaryType.getPatternValue();
         return Pattern.matches(patValue, value);
     }
-
 
     public void removeRecord(String key) throws Exception   {
         boolean deleteLine = false;
@@ -80,7 +76,6 @@ public class FileOperation implements ChoiceOfAction {
                 }
             }
             bufferedWriter.flush();
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -93,8 +88,9 @@ public class FileOperation implements ChoiceOfAction {
             throw new Exception(Dictionary.NO_KEY);
         }
     }
-
+  
     public String search(String key) {
+
         String[] stringsSearch = fileReading().split("\n");
 
             for (int i = 0; i < stringsSearch.length; i++) {
@@ -102,7 +98,6 @@ public class FileOperation implements ChoiceOfAction {
                    return stringsSearch[i];
                 }
             }
-
     return Dictionary.NO_KEY;
     }
 }

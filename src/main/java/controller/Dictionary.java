@@ -16,9 +16,6 @@ public class Dictionary implements ChoiceOfAction {
     private DictionaryStorage dictionaryStorage;
     private DictionaryType dictionaryType;
 
-
-
-
     public void saveData() {
         dictionaryStorage.saveData();
     }
@@ -29,7 +26,6 @@ public class Dictionary implements ChoiceOfAction {
         this.dictionaryStorage = new DictionaryStorage(path, localMap);
         dictionaryStorage.getData();
     }
-
 
     public void removeRecord(String key) throws Exception {
         if (localMap.containsKey(key)) {
@@ -49,7 +45,6 @@ public class Dictionary implements ChoiceOfAction {
         saveData();
         return dictionaryContent.toString();
     }
-
 
     public String search(String key) {
         String search = localMap.get(key);

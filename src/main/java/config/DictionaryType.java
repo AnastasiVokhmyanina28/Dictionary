@@ -17,7 +17,6 @@ public enum DictionaryType {
         this.dictionaryPath = dictionaryPath;
     }
 
-
     public static String getSymbol() {
         return splitChar;
     }
@@ -37,5 +36,4 @@ public enum DictionaryType {
     public String getDictionaryPath() {
         return dictionaryPath;
     }
-
 }
