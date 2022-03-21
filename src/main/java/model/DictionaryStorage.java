@@ -1,6 +1,8 @@
 package model;
 import java.io.*;
+import java.util.Scanner;
 import java.util.Map;
+import config.DictionaryType;
 import view.Console;
 
 public class DictionaryStorage {

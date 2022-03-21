@@ -5,8 +5,9 @@ import java.util.regex.Pattern;
 import config.DictionaryType;
 import model.DictionaryStorage;
 import view.Console;
+import controller.ChoiceOfAction;
 
-public class Dictionary {
+public class Dictionary implements ChoiceOfAction {
     public static final String NO_KEY = "No key found!";
     public static final String SIMILARITY_TO_THE_PATTERN = "No matches with the template were found!";
     public static final String ADD_KEY = "The key has been successfully added!";
@@ -18,7 +19,7 @@ public class Dictionary {
 
 
 
-  public void saveData() {
+    public void saveData() {
         dictionaryStorage.saveData();
     }
 
@@ -33,19 +34,28 @@ public class Dictionary {
     public void removeRecord(String key) throws Exception {
         if (localMap.containsKey(key)) {
             localMap.remove(key);
+            saveData();
         } else {
             throw new Exception(NO_KEY);
         }
+
     }
 
-    public Map<String, String> getLocalMap() {
-        return localMap;
+    public String fileReading(){
+        StringBuilder dictionaryContent = new StringBuilder();
+        for (Map.Entry<String,String> pair : localMap.entrySet()) {
+            dictionaryContent.append(pair.getKey() + DictionaryType.getSymbol() + pair.getValue() + "\n" ) ;
+        }
+        saveData();
+        return dictionaryContent.toString();
     }
 
-    public String recordSearch(String key) {
+
+    public String search(String key) {
         String search = localMap.get(key);
         if (search != null) {
-            String searchResult = key + Console.SPLIT_CHAR + search;
+            String searchResult = key + DictionaryType.getSymbol() + search;
+            saveData();
             return searchResult;
         } else {
             return KEY_DOES_NOT_EXIST;
@@ -53,11 +63,11 @@ public class Dictionary {
 
     }
 
-
     public String addAnEntry(String key, String value) {
-        boolean matches = Pattern.matches(DictionaryType.DICTIONARY_ONE.getPatternValue(), value);
+        boolean matches = Pattern.matches(dictionaryType.getPatternValue(), value);
         if (keyCheck(key) && matches) {
             localMap.put(key, value);
+            saveData();
             return ADD_KEY;
         } else {
             return SIMILARITY_TO_THE_PATTERN;
