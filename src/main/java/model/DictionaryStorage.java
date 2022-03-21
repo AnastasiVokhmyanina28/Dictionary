@@ -5,39 +5,40 @@ import view.Console;
 
 public class DictionaryStorage {
     private Map<String, String> localMap;
-    private String path;
+    private final String path;
 
     public DictionaryStorage(String path, Map<String, String> localMap) {
         this.localMap = localMap;
         this.path = path;
     }
 
-    public Map<String, String> getData() {
+    public Map<String, String> getData(){
         try {
             File file = new File(path);
-            FileReader fr = new FileReader(file);
-            BufferedReader reader = new BufferedReader(fr);
-            String line = reader.readLine();
-            while (line != null) {
-                String[] del = line.split(Console.SPLIT_CHAR);
-                localMap.put(del[0], del[1]);
-                line = reader.readLine();
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                parseLine(scanner.nextLine());
             }
+            scanner.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return localMap;
     }
 
+    private Map<String, String> parseLine(String line) {
+
+        String[] lineParts = line.split(DictionaryType.getSymbol());
+        localMap.put(lineParts[0], lineParts[1]);
+        return localMap;
+    }
     public void saveData() {
         File file = new File(path);
         BufferedWriter bf = null;
         try {
             bf = new BufferedWriter(new FileWriter(file));
             for (Map.Entry<String, String> entry : localMap.entrySet()) {
-                bf.write(entry.getKey() + Console.SPLIT_CHAR + entry.getValue());
+                bf.write(entry.getKey() + DictionaryType.getSymbol() + entry.getValue());
                 bf.newLine();
             }
             bf.flush();
