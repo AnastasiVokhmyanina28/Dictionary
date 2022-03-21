@@ -18,7 +18,7 @@ public class Dictionary {
 
 
 
-  public void saveData() {
+    public void saveData() {
         dictionaryStorage.saveData();
     }
 
@@ -45,7 +45,7 @@ public class Dictionary {
     public String recordSearch(String key) {
         String search = localMap.get(key);
         if (search != null) {
-            String searchResult = key + Console.SPLIT_CHAR + search;
+            String searchResult = key + DictionaryType.getSymbol() + search;
             return searchResult;
         } else {
             return KEY_DOES_NOT_EXIST;
@@ -55,7 +55,7 @@ public class Dictionary {
 
 
     public String addAnEntry(String key, String value) {
-        boolean matches = Pattern.matches(DictionaryType.DICTIONARY_ONE.getPatternValue(), value);
+        boolean matches = Pattern.matches(dictionaryType.getPatternValue(), value);
         if (keyCheck(key) && matches) {
             localMap.put(key, value);
             return ADD_KEY;
