@@ -73,53 +73,7 @@ public class Console {
         return new FileOperation(dictionaryPath, dictionaryType);
     }
 
-    public int startp(){
-        System.out.println(SYSTEM);
-        System.out.println(MAP_DICTIONARY);
-        System.out.println(FILE_DICTIONARY);
-        System.out.println(SELECT + DictionaryType.getSymbol());
-        return scanner.nextInt();
-    }
-
-
-    private void startS(int choice){
-
-        switch (choice){
-            case 1:
-                Map<Integer, Dictionary> dictionaries = new HashMap<>();
-                for (DictionaryType dictionaryType : DictionaryType.values()) {
-                    dictionaries.put(dictionaryType.getNumber(), creation(dictionaryType));
-                }
-                 this.mapDictionaries = dictionaries;
-                break;
-
-            case 2:
-                Map<Integer, FileOperation> fileDictionaries = new HashMap<>();
-                for (DictionaryType dictionaryType : DictionaryType.values()) {
-                    fileDictionaries.put(dictionaryType.getNumber(), creation1(dictionaryType));
-                }
-                this.fileDictionaries = fileDictionaries;
-                break;
-            default:
-                System.out.println(NO_COMMAND);
-                break;
-
-        }
-          }
-
-    public static Dictionary creation(DictionaryType dictionaryType) {
-        Map<String, String> localMap = new HashMap<>();
-        String dictionaryPath = dictionaryType.getDictionaryPath();
-        var data = new DictionaryStorage(dictionaryType.getDictionaryPath(), localMap).getData();
-        return new Dictionary(dictionaryPath, dictionaryType, data);
-    }
-
-    public static FileOperation creation1(DictionaryType dictionaryType) {
-        String dictionaryPath = dictionaryType.getDictionaryPath();
-        return new FileOperation(dictionaryPath, dictionaryType);
-    }
-
-    public void start() {
+     public void start() {
         int choice = 0 ;
        while (mapDictionaries == null){
            choice = this.startp();
@@ -144,10 +98,6 @@ public class Console {
         System.out.println(DICTIONARY_TYPE_TWO);
         System.out.println(SELECT + DictionaryType.getSymbol());
         return scanner.nextInt();
-    }
-
-    public void  systemSelection(int chosenAction ) {
-        this.fileOperation = fileDictionaries.get(chosenAction);
     }
 
     private void chooseDictionary(int chosenAction) {
