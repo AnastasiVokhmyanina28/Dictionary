@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import config.DictionaryType;
 import controller.ChoiceOfAction;
+import utils.KeyNotFoundException;
 
 public class FileOperation implements ChoiceOfAction {
     private final String path;
@@ -60,7 +61,7 @@ public class FileOperation implements ChoiceOfAction {
         return Pattern.matches(patValue, value);
     }
 
-    public void removeRecord(String key) throws Exception   {
+    public void removeRecord(String key) throws KeyNotFoundException   {
         boolean deleteLine = false;
         String[] readLines = fileReading().split("\n");
         BufferedWriter bufferedWriter = null;
@@ -85,7 +86,7 @@ public class FileOperation implements ChoiceOfAction {
             }
         }
         if (!deleteLine){
-            throw new Exception(Dictionary.NO_KEY);
+            throw new KeyNotFoundException(Dictionary.NO_KEY);
         }
     }
   

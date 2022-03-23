@@ -6,6 +6,7 @@ import config.DictionaryType;
 import model.DictionaryStorage;
 import view.Console;
 import controller.ChoiceOfAction;
+import utils.KeyNotFoundException;
 
 public class Dictionary implements ChoiceOfAction {
     public static final String NO_KEY = "No key found!";
@@ -27,12 +28,12 @@ public class Dictionary implements ChoiceOfAction {
         dictionaryStorage.getData();
     }
 
-    public void removeRecord(String key) throws Exception {
+    public void removeRecord(String key) throws KeyNotFoundException {
         if (localMap.containsKey(key)) {
             localMap.remove(key);
             saveData();
         } else {
-            throw new Exception(NO_KEY);
+            throw new KeyNotFoundException(NO_KEY);
         }
 
     }
