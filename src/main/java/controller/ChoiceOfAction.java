@@ -5,4 +5,6 @@ public interface ChoiceOfAction {
     String search(String key);
     String addAnEntry(String key, String value);
     String fileReading();
+    boolean keyCheck(String key);
+    boolean valueCheck(String value);
 }

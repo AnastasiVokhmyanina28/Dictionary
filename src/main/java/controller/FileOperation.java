@@ -15,6 +15,7 @@ public class FileOperation implements ChoiceOfAction {
         this.path = path;
     }
 
+    @Override
     public String fileReading() {
         StringBuilder data = new StringBuilder();
         try {
@@ -29,6 +30,7 @@ public class FileOperation implements ChoiceOfAction {
         return data.toString();
     }
 
+    @Override
     public String addAnEntry(String key, String value) {
         if (keyCheck(key) && valueCheck(value)) {
             BufferedWriter bufferedWriter = null;
@@ -51,16 +53,19 @@ public class FileOperation implements ChoiceOfAction {
         }
     }
 
+    @Override
     private boolean keyCheck(String key) {
         String patKey =  dictionaryType.getPatternKey();
         return Pattern.matches(patKey, key);
     }
 
+    @Override
     private boolean valueCheck(String value) {
         String patValue =  dictionaryType.getPatternValue();
         return Pattern.matches(patValue, value);
     }
 
+    @Override
     public void removeRecord(String key) throws KeyNotFoundException   {
         boolean deleteLine = false;
         String[] readLines = fileReading().split("\n");
@@ -89,7 +94,8 @@ public class FileOperation implements ChoiceOfAction {
             throw new KeyNotFoundException(Dictionary.NO_KEY);
         }
     }
-  
+
+    @Override
     public String search(String key) {
 
         String[] stringsSearch = fileReading().split("\n");

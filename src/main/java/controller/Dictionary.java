@@ -28,6 +28,7 @@ public class Dictionary implements ChoiceOfAction {
         dictionaryStorage.getData();
     }
 
+    @Override
     public void removeRecord(String key) throws KeyNotFoundException {
         if (localMap.containsKey(key)) {
             localMap.remove(key);
@@ -38,6 +39,7 @@ public class Dictionary implements ChoiceOfAction {
 
     }
 
+    @Override
     public String fileReading(){
         StringBuilder dictionaryContent = new StringBuilder();
         for (Map.Entry<String,String> pair : localMap.entrySet()) {
@@ -47,6 +49,7 @@ public class Dictionary implements ChoiceOfAction {
         return dictionaryContent.toString();
     }
 
+    @Override
     public String search(String key) {
         String search = localMap.get(key);
         if (search != null) {
@@ -59,9 +62,9 @@ public class Dictionary implements ChoiceOfAction {
 
     }
 
+    @Override
     public String addAnEntry(String key, String value) {
-        boolean matches = Pattern.matches(dictionaryType.getPatternValue(), value);
-        if (keyCheck(key) && matches) {
+        if (keyCheck(key) && valueCheck(value)) {
             localMap.put(key, value);
             saveData();
             return ADD_KEY;
@@ -69,9 +72,14 @@ public class Dictionary implements ChoiceOfAction {
             return SIMILARITY_TO_THE_PATTERN;
         }
     }
-
-    private boolean keyCheck(String key) {
+    @Override
+    public boolean keyCheck(String key) {
         String patKey =  dictionaryType.getPatternKey();
         return Pattern.matches(patKey, key);
+    }
+    @Override
+    public boolean valueCheck(String value) {
+        String patValue =  dictionaryType.getPatternValue();
+        return Pattern.matches(patValue, value);
     }
 }
