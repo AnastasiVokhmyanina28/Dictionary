@@ -54,13 +54,13 @@ public class FileOperation implements ChoiceOfAction {
     }
 
     @Override
-    private boolean keyCheck(String key) {
+    public boolean keyCheck(String key) {
         String patKey =  dictionaryType.getPatternKey();
         return Pattern.matches(patKey, key);
     }
 
     @Override
-    private boolean valueCheck(String value) {
+    public boolean valueCheck(String value) {
         String patValue =  dictionaryType.getPatternValue();
         return Pattern.matches(patValue, value);
     }
