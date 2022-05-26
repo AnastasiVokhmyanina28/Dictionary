@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Dictionary" />
+        <module name="Dictionary-DICT-4-3" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Dictionary" target="11" />
+      <module name="Dictionary-DICT-4-3" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>
