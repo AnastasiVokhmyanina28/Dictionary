@@ -1,20 +1,17 @@
 package com.model;
 import java.io.*;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map;
 import com.config.DictionaryType;
 
 
 public class DictionaryStorage {
+    private Map<String, String> localMap;
+    private final String path;
 
-    private Map<String, String> localMap = new HashMap<>();
-    private  String path;
-
-
-    public DictionaryStorage(String path) {
-       this.path = path;
-
+    public DictionaryStorage(String path, Map<String, String> localMap) {
+        this.localMap = localMap;
+        this.path = path;
     }
 
     public Map<String, String> getData(){
@@ -30,13 +27,12 @@ public class DictionaryStorage {
         }
         return localMap;
     }
-
+    
     private  Map<String, String>  parseLine (String line) {
         String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
         return localMap;
     }
-
     public void saveData() {
         File file = new File(path);
         BufferedWriter bf = null;
