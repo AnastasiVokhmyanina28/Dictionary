@@ -1,8 +1,8 @@
-package com.config;
+package config;
 public enum DictionaryType {
 
-    DICTIONARY_ONE(1, "^[a-zA-Z]{4}$", "[а-яёА-ЯЁ]+", "src/main/resources/Dictionary.txt"),
-    DICTIONARY_TWO(2, "^[0-9]{5}$", "[а-яёА-ЯЁ]+", "src/main/resources/digitalDictionary.txt");
+    DICTIONARY_ONE(1, "^[a-zA-Z]{4}$", "[а-яёА-ЯЁ]+", "../resources/Dictionary.txt"),
+    DICTIONARY_TWO(2, "^[0-9]{5}$", "[а-яёА-ЯЁ]+", "../resources/digitalDictionary.txt");
 
     private static final String splitChar = ":";
     private final Integer number;

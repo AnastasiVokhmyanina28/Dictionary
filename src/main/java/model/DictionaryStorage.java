@@ -1,9 +1,9 @@
-package com.model;
+package model;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Map;
-import com.config.DictionaryType;
-
+import config.DictionaryType;
+import view.Console;
 
 public class DictionaryStorage {
     private Map<String, String> localMap;

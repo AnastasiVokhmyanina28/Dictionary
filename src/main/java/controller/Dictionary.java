@@ -1,9 +1,12 @@
-package com.controller;
+package controller;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-import com.config.DictionaryType;
-import com.model.DictionaryStorage;
-import com.utils.KeyNotFoundException;
+import config.DictionaryType;
+import model.DictionaryStorage;
+import view.Console;
+import controller.ChoiceOfAction;
+import utils.KeyNotFoundException;
 
 public class Dictionary implements ChoiceOfAction {
     public static final String NO_KEY = "No key found!";
