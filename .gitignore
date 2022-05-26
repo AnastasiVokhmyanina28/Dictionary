@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-src/main/classes
-=======
 # Compiled class file
 *.class
 
@@ -31,4 +28,4 @@ hs_err_pid*
 *.iws
 # Project exclude paths
 /target/
->>>>>>> Stashed changes
+
