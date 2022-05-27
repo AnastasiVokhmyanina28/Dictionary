@@ -2,11 +2,11 @@ package view;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import controller.Dictionary;
 import config.DictionaryType;
+import controller.Dictionary;
 import controller.FileOperation;
 import model.DictionaryStorage;
- 
+import controller.ChoiceOfAction;
 
 public class Console {
 
@@ -28,20 +28,17 @@ public class Console {
     public static final String SYSTEM = " Choose a system";
     public static final String MAP_DICTIONARY = "\t1 Work with map";
     public static final String FILE_DICTIONARY = "\t2 Work with file";
-    private Scanner scanner;
-    private Dictionary dictionary;
-    private Map<Integer, Dictionary> mapDictionaries;
-    private Map<Integer, FileOperation> fileDictionaries;
-    private FileOperation fileOperation;
+    private final Scanner scanner;
+    private ChoiceOfAction dictionary = null;
+    private Map<Integer, ChoiceOfAction> mapDictionaries;
     private boolean isRunningConsole = false;
-
+    private boolean dictionaryСhoice = false;
 
     public Console() {
         scanner = new Scanner(System.in, "windows-1251");
-
     }
 
-    public int startp(){
+    public int startp() {
         System.out.println(SYSTEM);
         System.out.println(MAP_DICTIONARY);
         System.out.println(FILE_DICTIONARY);
@@ -49,34 +46,20 @@ public class Console {
         return scanner.nextInt();
     }
 
-
-    private void startS(int choice){
-
-        switch (choice){
-            case 1:
-                Map<Integer, Dictionary> dictionaries = new HashMap<>();
-                for (DictionaryType dictionaryType : DictionaryType.values()) {
-                    dictionaries.put(dictionaryType.getNumber(), creation(dictionaryType));
-                }
-                 this.mapDictionaries = dictionaries;
-                break;
-
-            case 2:
-                Map<Integer, FileOperation> fileDictionaries = new HashMap<>();
-                for (DictionaryType dictionaryType : DictionaryType.values()) {
-                    fileDictionaries.put(dictionaryType.getNumber(), creation1(dictionaryType));
-                }
-                this.fileDictionaries = fileDictionaries;
-                break;
-            default:
+    private void startS(int choice) {
+        Map<Integer, ChoiceOfAction> dictionaries = new HashMap<>();
+        for (DictionaryType dictionaryType : DictionaryType.values()) {
+           if (choice == DictionaryType.DICTIONARY_ONE.getNumber()){
+                dictionaries.put(dictionaryType.getNumber(), creation(dictionaryType)) ;
+            } else if (choice == DictionaryType.DICTIONARY_TWO.getNumber()) {
+                dictionaries.put(dictionaryType.getNumber(), creation1(dictionaryType)) ;
+            } else {
                 System.out.println(NO_COMMAND);
-                break;
-
+               return;
+           }
         }
-          }
-
-
-
+        this.mapDictionaries = dictionaries;
+    }
 
     public static Dictionary creation(DictionaryType dictionaryType) {
         Map<String, String> localMap = new HashMap<>();
@@ -85,37 +68,29 @@ public class Console {
         return new Dictionary(dictionaryPath, dictionaryType, data);
     }
 
-
     public static FileOperation creation1(DictionaryType dictionaryType) {
         String dictionaryPath = dictionaryType.getDictionaryPath();
         return new FileOperation(dictionaryPath, dictionaryType);
     }
 
+     public void start() {
+        int choice = 0 ;
+       while (mapDictionaries == null){
+           choice = this.startp();
 
-
-
-
-    public void start() {
-        int choice = this.startp();
-        this.startS(choice);
-
-        int dictionarySelection = this.menuChoiceDictionary();
-        if (mapDictionaries != null) {
-            chooseDictionary(dictionarySelection);
-            while (!isRunningConsole) {
-                int choiceOfActions = this.choiceOfAction();
-                this.choice(choiceOfActions);
+           this.startS(choice);
+       }
+        while (dictionary == null) {
+            int dictionarySelection = this.menuChoiceDictionary();
+            if (mapDictionaries != null) {
+                chooseDictionary(dictionarySelection);
             }
-        } else {
-            systemSelection(dictionarySelection);
-            while (!isRunningConsole) {
-                int choiceOfActions = this.choiceOfAction();
-                this.fileOperation(choiceOfActions);
-
-            }
-
         }
-    }
+            while (!isRunningConsole) {
+                int choiceOfActions = this.choiceOfAction();
+                choice(choiceOfActions, dictionary);
+            }
+        }
 
     public int menuChoiceDictionary() {
         System.out.println(SELECT_DICTIONARY);
@@ -125,16 +100,10 @@ public class Console {
         return scanner.nextInt();
     }
 
-    public void  systemSelection(int chosenAction ) {
-        this.fileOperation = fileDictionaries.get(chosenAction);
-    }
-
     private void chooseDictionary(int chosenAction) {
         this.dictionary = mapDictionaries.get(chosenAction);
     }
-
-
-
+  
     public int choiceOfAction() {
         System.out.println(SELECT_THE_COMMAND + DictionaryType.getSymbol());
         System.out.println(READ);
@@ -147,13 +116,11 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void choice(int chosenAction) {
+    private void choice(int chosenAction, ChoiceOfAction dictionary) {
 
         switch (chosenAction) {
             case 1:
-                for (String key : dictionary.getLocalMap().keySet()) {
-                    System.out.println(key + DictionaryType.getSymbol() + dictionary.getLocalMap().get(key));
-                }
+                System.out.println(dictionary.fileReading());
                 break;
             case 2:
                 System.out.println(ENTER_KEY);
@@ -164,12 +131,11 @@ public class Console {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-                dictionary.saveData();
                 break;
             case 3:
                 System.out.println(ENTER_KEY);
                 String usKey = scanner.next();
-                System.out.println(dictionary.recordSearch(usKey));
+                System.out.println(dictionary.search(usKey));
                 break;
             case 4:
                 System.out.println(ENTER_KEY);
@@ -177,56 +143,21 @@ public class Console {
                 System.out.println(ENTER_VALUE);
                 String value = scanner.next();
                 System.out.println(dictionary.addAnEntry(key, value));
-                dictionary.saveData();
+
                 break;
             case 5:
-                dictionary.saveData();
+                this.dictionary = null;
+                while (this.dictionary == null){
                 int nextDictionary = menuChoiceDictionary();
                 chooseDictionary(nextDictionary);
-                break;
-            case 6:
-                dictionary.saveData();
-                this.isRunningConsole = true;
-                break;
-            default:
-                System.out.println(NO_COMMAND);
-                break;
-        }
-    }
-
-    private void fileOperation(int chosenAction){
-
-        switch (chosenAction){
-            case 1:
-                System.out.println(fileOperation.fileReading());
-                break;
-            case 2:
-                System.out.println(ENTER_KEY);
-                String userKey = scanner.next();
-                fileOperation.fileRemove(userKey);
-                break;
-            case 3:
-                System.out.println(ENTER_KEY);
-                String usKey = scanner.next();
-                System.out.println(fileOperation.search(usKey));
-                break;
-            case 4:
-                System.out.println(ENTER_KEY);
-                String key = scanner.next();
-                System.out.println(ENTER_VALUE);
-                String value = scanner.next();
-               System.out.println(fileOperation.fileAdd(key, value));
-                break;
-            case 5:
-                int nextDictionary = menuChoiceDictionary();
-                systemSelection(nextDictionary);
+                }
                 break;
             case 6:
                 this.isRunningConsole = true;
                 break;
             default:
                 System.out.println(NO_COMMAND);
+                break;
         }
-
     }
 }

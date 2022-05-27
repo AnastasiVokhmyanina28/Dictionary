@@ -7,15 +7,14 @@ import view.Console;
 
 public class DictionaryStorage {
     private Map<String, String> localMap;
-    private String path;
+    private final String path;
 
     public DictionaryStorage(String path, Map<String, String> localMap) {
         this.localMap = localMap;
         this.path = path;
     }
 
-     public Map<String, String> getData(){
-
+    public Map<String, String> getData(){
         try {
             File file = new File(path);
             Scanner scanner = new Scanner(file);
@@ -30,7 +29,6 @@ public class DictionaryStorage {
     }
     
     private  Map<String, String>  parseLine (String line) {
-
         String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
         return localMap;

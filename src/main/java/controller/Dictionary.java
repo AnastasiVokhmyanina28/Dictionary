@@ -5,8 +5,10 @@ import java.util.regex.Pattern;
 import config.DictionaryType;
 import model.DictionaryStorage;
 import view.Console;
+import controller.ChoiceOfAction;
+import utils.KeyNotFoundException;
 
-public class Dictionary {
+public class Dictionary implements ChoiceOfAction {
     public static final String NO_KEY = "No key found!";
     public static final String SIMILARITY_TO_THE_PATTERN = "No matches with the template were found!";
     public static final String ADD_KEY = "The key has been successfully added!";
@@ -14,9 +16,6 @@ public class Dictionary {
     private Map<String, String> localMap;
     private DictionaryStorage dictionaryStorage;
     private DictionaryType dictionaryType;
-
-
-
 
     public void saveData() {
         dictionaryStorage.saveData();
@@ -29,23 +28,33 @@ public class Dictionary {
         dictionaryStorage.getData();
     }
 
-
-    public void removeRecord(String key) throws Exception {
+    @Override
+    public void removeRecord(String key) throws KeyNotFoundException {
         if (localMap.containsKey(key)) {
             localMap.remove(key);
+            saveData();
         } else {
-            throw new Exception(NO_KEY);
+            throw new KeyNotFoundException(NO_KEY);
         }
+
     }
 
-    public Map<String, String> getLocalMap() {
-        return localMap;
+    @Override
+    public String fileReading(){
+        StringBuilder dictionaryContent = new StringBuilder();
+        for (Map.Entry<String,String> pair : localMap.entrySet()) {
+            dictionaryContent.append(pair.getKey() + DictionaryType.getSymbol() + pair.getValue() + "\n" ) ;
+        }
+        saveData();
+        return dictionaryContent.toString();
     }
 
-    public String recordSearch(String key) {
+    @Override
+    public String search(String key) {
         String search = localMap.get(key);
         if (search != null) {
             String searchResult = key + DictionaryType.getSymbol() + search;
+            saveData();
             return searchResult;
         } else {
             return KEY_DOES_NOT_EXIST;
@@ -53,19 +62,24 @@ public class Dictionary {
 
     }
 
-
+    @Override
     public String addAnEntry(String key, String value) {
-        boolean matches = Pattern.matches(dictionaryType.getPatternValue(), value);
-        if (keyCheck(key) && matches) {
+        if (keyCheck(key) && valueCheck(value)) {
             localMap.put(key, value);
+            saveData();
             return ADD_KEY;
         } else {
             return SIMILARITY_TO_THE_PATTERN;
         }
     }
-
-    private boolean keyCheck(String key) {
+    @Override
+    public boolean keyCheck(String key) {
         String patKey =  dictionaryType.getPatternKey();
         return Pattern.matches(patKey, key);
+    }
+    @Override
+    public boolean valueCheck(String value) {
+        String patValue =  dictionaryType.getPatternValue();
+        return Pattern.matches(patValue, value);
     }
 }

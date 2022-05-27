@@ -3,16 +3,19 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import config.DictionaryType;
+import controller.ChoiceOfAction;
+import utils.KeyNotFoundException;
 
-public class FileOperation {
-    private String path;
+public class FileOperation implements ChoiceOfAction {
+    private final String path;
     private DictionaryType dictionaryType;
 
-    public FileOperation(String path, DictionaryType dictionaryType) {
+    public FileOperation(String path, DictionaryType dictionaryType)  {
         this.dictionaryType = dictionaryType;
         this.path = path;
     }
 
+    @Override
     public String fileReading() {
         StringBuilder data = new StringBuilder();
         try {
@@ -27,9 +30,8 @@ public class FileOperation {
         return data.toString();
     }
 
-
-    public String fileAdd(String key, String value) {
-
+    @Override
+    public String addAnEntry(String key, String value) {
         if (keyCheck(key) && valueCheck(value)) {
             BufferedWriter bufferedWriter = null;
             try {
@@ -37,7 +39,6 @@ public class FileOperation {
                 bufferedWriter = new BufferedWriter(fileWriter);
                 bufferedWriter.write( key + DictionaryType.getSymbol() + value + "\n");
                 bufferedWriter.flush();
-
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -52,19 +53,21 @@ public class FileOperation {
         }
     }
 
-
-    private boolean keyCheck(String key) {
+    @Override
+    public boolean keyCheck(String key) {
         String patKey =  dictionaryType.getPatternKey();
         return Pattern.matches(patKey, key);
     }
 
-    private boolean valueCheck(String value) {
+    @Override
+    public boolean valueCheck(String value) {
         String patValue =  dictionaryType.getPatternValue();
         return Pattern.matches(patValue, value);
     }
 
-
-    public void fileRemove(String key) {
+    @Override
+    public void removeRecord(String key) throws KeyNotFoundException   {
+        boolean deleteLine = false;
         String[] readLines = fileReading().split("\n");
         BufferedWriter bufferedWriter = null;
         try {
@@ -74,9 +77,11 @@ public class FileOperation {
                 if (!key.equals(readLines[i].split(DictionaryType.getSymbol())[0])) {
                     bufferedWriter.write(readLines[i] + "\n");
                 }
+                else {
+                    deleteLine = true;
+                }
             }
             bufferedWriter.flush();
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -85,13 +90,14 @@ public class FileOperation {
             } catch (Exception e) {
             }
         }
-
+        if (!deleteLine){
+            throw new KeyNotFoundException(Dictionary.NO_KEY);
+        }
     }
 
+    @Override
+    public String search(String key) {
 
-
-
-    public String  search(String key) {
         String[] stringsSearch = fileReading().split("\n");
 
             for (int i = 0; i < stringsSearch.length; i++) {
@@ -99,7 +105,6 @@ public class FileOperation {
                    return stringsSearch[i];
                 }
             }
-
     return Dictionary.NO_KEY;
     }
 }
