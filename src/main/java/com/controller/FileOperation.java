@@ -1,17 +1,24 @@
 package com.controller;
 import java.io.*;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import com.Validation.Validator;
 import com.config.DictionaryType;
 import com.utils.KeyNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 public class FileOperation implements ChoiceOfAction {
     private final String path;
     private DictionaryType dictionaryType;
+    @Autowired
+    private Map<DictionaryType, Validator> validator;
 
-    public FileOperation(String path, DictionaryType dictionaryType)  {
+    public FileOperation(@Qualifier("file")DictionaryType dictionaryType)  {
         this.dictionaryType = dictionaryType;
-        this.path = path;
+        this.path = dictionaryType.getDictionaryPath();
     }
 
     @Override
@@ -31,7 +38,7 @@ public class FileOperation implements ChoiceOfAction {
 
     @Override
     public String addAnEntry(String key, String value) {
-        if (keyCheck(key) && valueCheck(value)) {
+        if (validator.get(dictionaryType).validPair(key, value)) {
             BufferedWriter bufferedWriter = null;
             try {
                 FileWriter fileWriter = new FileWriter(path, true);
@@ -50,18 +57,6 @@ public class FileOperation implements ChoiceOfAction {
         } else {
             return Dictionary.SIMILARITY_TO_THE_PATTERN;
         }
-    }
-
-    @Override
-    public boolean keyCheck(String key) {
-        String patKey =  dictionaryType.getPatternKey();
-        return Pattern.matches(patKey, key);
-    }
-
-    @Override
-    public boolean valueCheck(String value) {
-        String patValue =  dictionaryType.getPatternValue();
-        return Pattern.matches(patValue, value);
     }
 
     @Override
