@@ -3,6 +3,7 @@ package com.config;
 import com.Dict;
 import com.model.DictionaryStorage;
 import com.view.Console;
+import com.Validation.Validator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

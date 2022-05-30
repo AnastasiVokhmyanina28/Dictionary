@@ -7,10 +7,9 @@ public class Validator implements ValidationValue {
     private final String patternKey;
     private final String patternValue;
     public Validator(String patternKey, String patternValue){
-        this.patternKey=patternKey;
-        this.patternValue=patternValue;
+        this.patternKey = patternKey;
+        this.patternValue = patternValue;
     }
-
 
     public boolean keyCheck(String key){
         return Pattern.matches(patternKey, key);

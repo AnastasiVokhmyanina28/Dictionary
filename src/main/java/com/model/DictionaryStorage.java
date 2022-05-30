@@ -1,16 +1,16 @@
 package com.model;
 import java.io.*;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map;
 import com.config.DictionaryType;
 
 
 public class DictionaryStorage {
-    private Map<String, String> localMap;
+    private Map<String, String> localMap = new HashMap<>();
     private final String path;
 
-    public DictionaryStorage(String path, Map<String, String> localMap) {
-        this.localMap = localMap;
+    public DictionaryStorage(String path) {
         this.path = path;
     }
 
