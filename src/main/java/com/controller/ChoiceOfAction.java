@@ -1,4 +1,4 @@
-package controller;
+package com.controller;
 
 public interface ChoiceOfAction {
     void removeRecord(String key) throws Exception;

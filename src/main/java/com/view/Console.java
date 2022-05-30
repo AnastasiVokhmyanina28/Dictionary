@@ -1,12 +1,12 @@
-package view;
+package com.view;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import config.DictionaryType;
-import controller.Dictionary;
-import controller.FileOperation;
-import model.DictionaryStorage;
-import controller.ChoiceOfAction;
+import com.config.DictionaryType;
+import com.controller.Dictionary;
+import com.controller.FileOperation;
+import com.model.DictionaryStorage;
+import com.controller.ChoiceOfAction;
 
 public class Console {
 

@@ -1,4 +1,5 @@
-import view.Console;
+package com;
+import com.view.Console;
 
 public class Dict {
 

@@ -1,10 +1,9 @@
-package controller;
+package com.controller;
 import java.io.*;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import config.DictionaryType;
-import controller.ChoiceOfAction;
-import utils.KeyNotFoundException;
+import com.config.DictionaryType;
+import com.utils.KeyNotFoundException;
 
 public class FileOperation implements ChoiceOfAction {
     private final String path;
