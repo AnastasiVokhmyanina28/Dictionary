@@ -21,15 +21,18 @@ public class Dictionary implements ChoiceOfAction {
     @Autowired
     private Map<DictionaryType, Validator> validator;
 
-    public void saveData() {
-        dictionaryStorage.saveData();
-    }
+
     @Autowired
     public Dictionary(@Qualifier("map")DictionaryType dictionaryType) {
         this.dictionaryType = dictionaryType;
         this.dictionaryStorage = new DictionaryStorage(dictionaryType.getDictionaryPath());
-        dictionaryStorage.getData();
+        localMap =  dictionaryStorage.getData();
     }
+
+    public void saveData() {
+        dictionaryStorage.saveData();
+    }
+
 
     @Override
     public void removeRecord(String key) throws KeyNotFoundException {

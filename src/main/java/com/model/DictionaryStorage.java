@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map;
 import com.config.DictionaryType;
+import org.springframework.core.io.ClassPathResource;
 
 
 public class DictionaryStorage {
@@ -16,13 +17,13 @@ public class DictionaryStorage {
 
     public Map<String, String> getData(){
         try {
-            File file = new File(path);
+            File file = new ClassPathResource(path).getFile();
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 parseLine(scanner.nextLine());
             }
             scanner.close();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return localMap;

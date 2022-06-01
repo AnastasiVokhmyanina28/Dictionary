@@ -2,13 +2,12 @@ package com.controller;
 import java.io.*;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.regex.Pattern;
-
 import com.Validation.Validator;
 import com.config.DictionaryType;
 import com.utils.KeyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 
 public class FileOperation implements ChoiceOfAction {
     private final String path;
@@ -25,12 +24,12 @@ public class FileOperation implements ChoiceOfAction {
     public String fileReading() {
         StringBuilder data = new StringBuilder();
         try {
-            File file = new File(path);
+            File file = new ClassPathResource(path).getFile();
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 data.append(scanner.nextLine()).append("\n");
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return data.toString();
