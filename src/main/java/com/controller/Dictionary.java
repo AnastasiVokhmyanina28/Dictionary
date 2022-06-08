@@ -1,7 +1,7 @@
 package com.controller;
 
 import java.util.Map;
-import com.Validation.Validator;
+import com.controller.validation.Validator;
 import com.config.DictionaryType;
 import com.model.DictionaryStorage;
 import com.utils.KeyNotFoundException;

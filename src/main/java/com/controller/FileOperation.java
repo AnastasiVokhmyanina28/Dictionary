@@ -2,7 +2,7 @@ package com.controller;
 import java.io.*;
 import java.util.Map;
 import java.util.Scanner;
-import com.Validation.Validator;
+import com.controller.validation.Validator;
 import com.config.DictionaryType;
 import com.utils.KeyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
