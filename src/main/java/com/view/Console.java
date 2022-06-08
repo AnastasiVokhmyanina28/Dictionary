@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 import com.config.DictionaryType;
 import com.controller.Dictionary;
-import com.model.DictionaryStorage;
 import com.controller.ChoiceOfAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,7 +38,7 @@ public class Console {
         scanner = new Scanner(System.in, "windows-1251");
     }
 
-    public int startp() {
+    public int systemSelectionMenu() {
         System.out.println(SYSTEM);
         System.out.println(MAP_DICTIONARY);
         System.out.println(FILE_DICTIONARY);
@@ -47,28 +46,23 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void startS() {
+    private void systemSelection() {
         Map<Integer, ChoiceOfAction> dictionaries = new HashMap<>();
         for (Map.Entry<Integer, DictionaryType> pair : dictionaryTypeMaps.entrySet()) {
             if (pair.getKey() == null) {
                 System.out.println(NO_COMMAND);
             } else {
-                dictionaries.put(pair.getKey(), creation(pair.getValue()));
+                dictionaries.put(pair.getKey(), new Dictionary(pair.getValue()));
             }
         }
         this.mapDictionaries = dictionaries;
     }
 
-    public static Dictionary creation(DictionaryType dictionaryType) {
-        String dictionaryPath = dictionaryType.getDictionaryPath();
-        var data = new DictionaryStorage(dictionaryPath).getData();
-        return new Dictionary( dictionaryType);
-    }
 
      public void start() {
          while (mapDictionaries == null) {
-             this.startp();
-             this.startS();
+             systemSelectionMenu();
+             systemSelection();
          }
         while (dictionary == null) {
             int dictionarySelection = this.menuChoiceDictionary();
