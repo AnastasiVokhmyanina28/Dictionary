@@ -66,9 +66,5 @@ public class SpringConfig {
     public Console getConsole() {
         return new Console();
     }
-
-    @Bean
-    public Dict getDict() {
-        return new Dict();
-    }
+    
 }
