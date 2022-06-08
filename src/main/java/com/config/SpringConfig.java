@@ -19,6 +19,8 @@ import java.util.Map;
 public class SpringConfig {
     @Value("#{${valuesMap}}")
     Map<Integer, String> dictionaryTypeMap;
+    private int dictionaryTypeOne = 1;
+    private int dictionaryTypeTwo = 2;
 
     @Bean
     public Map<Integer, DictionaryType> getDictionaryTypeMap() {
@@ -52,12 +54,12 @@ public class SpringConfig {
 
     @Bean("file")
     public DictionaryType getFileDictionary() {
-        return getDictionaryTypeMap().get(2);
+        return getDictionaryTypeMap().get(dictionaryTypeTwo);
     }
 
     @Bean("map")
     public DictionaryType getMapDictionary() {
-        return getDictionaryTypeMap().get(1);
+        return getDictionaryTypeMap().get(dictionaryTypeOne);
     }
 
     @Bean
