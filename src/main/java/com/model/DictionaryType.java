@@ -1,4 +1,4 @@
-package com.config;
+package com.model;
 
 
 public class DictionaryType {
@@ -8,7 +8,7 @@ public class DictionaryType {
     private final String patternValue;
     private final String dictionaryPath;
 
-    DictionaryType( String patternKey, String patternValue, String dictionaryPath) {
+    public DictionaryType (String patternKey, String patternValue, String dictionaryPath) {
         this.patternKey = patternKey;
         this.patternValue = patternValue;
         this.dictionaryPath = dictionaryPath;

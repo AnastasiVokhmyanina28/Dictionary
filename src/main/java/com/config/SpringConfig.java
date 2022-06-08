@@ -1,6 +1,7 @@
 package com.config;
 
 import com.model.DictionaryStorage;
+import com.model.DictionaryType;
 import com.view.Console;
 import com.controller.validation.Validator;
 import org.springframework.beans.factory.annotation.Value;

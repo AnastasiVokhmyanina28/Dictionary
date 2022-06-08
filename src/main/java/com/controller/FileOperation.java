@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.Map;
 import java.util.Scanner;
 import com.controller.validation.Validator;
-import com.config.DictionaryType;
+import com.model.DictionaryType;
 import com.utils.KeyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
