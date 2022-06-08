@@ -17,7 +17,7 @@ import java.util.Map;
 @PropertySource("classpath:config.properties")
 public class SpringConfig {
     @Value("#{${valuesMap}}")
-    Map<Integer, String> dictionaryTypeMap;
+    private Map<Integer, String> dictionaryTypeMap;
     private int dictionaryTypeOne = 1;
     private int dictionaryTypeTwo = 2;
 
