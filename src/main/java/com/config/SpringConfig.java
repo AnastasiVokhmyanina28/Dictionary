@@ -30,7 +30,7 @@ public class SpringConfig {
         return dictionaryMap;
     }
 
-    @Bean("ds")
+    @Bean
     public Map<Integer, DictionaryStorage> getDictionaryStorageMap(){
         Map<Integer, DictionaryStorage> dictionaryStorageMap = new HashMap<>();
         for (Map.Entry<Integer, DictionaryType> pair : getDictionaryTypeMap().entrySet()){
