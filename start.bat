@@ -1,2 +1,2 @@
-mvn clean package exec:java -Dexec.mainClass="com.Dict" -Dfile.encoding=UTF-8
+mvn clean package exec:java -Dexec.mainClass="com.Main" -Dfile.encoding=UTF-8
 pause

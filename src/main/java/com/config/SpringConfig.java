@@ -1,6 +1,5 @@
 package com.config;
 
-import com.Dict;
 import com.model.DictionaryStorage;
 import com.view.Console;
 import com.controller.validation.Validator;
@@ -66,5 +65,5 @@ public class SpringConfig {
     public Console getConsole() {
         return new Console();
     }
-    
+
 }
