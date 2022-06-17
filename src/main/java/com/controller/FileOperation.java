@@ -22,35 +22,24 @@ public class FileOperation implements ChoiceOfAction {
 
     @Override
     public String fileReading() {
-        StringBuilder data = new StringBuilder();
-        try {
-            File file = new ClassPathResource(path).getFile();
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                data.append(scanner.nextLine()).append("\n");
+        String line = "";
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))){
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return data.toString();
+        return line;
     }
 
     @Override
     public String addAnEntry(String key, String value) {
         if (validator.get(dictionaryType).validPair(key, value)) {
-            BufferedWriter bufferedWriter = null;
-            try {
-                FileWriter fileWriter = new FileWriter(path, true);
-                bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write( key + DictionaryType.getSymbol() + value + "\n");
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
+                bufferedWriter.write(key + DictionaryType.getSymbol() + value + "\n");
                 bufferedWriter.flush();
             } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    bufferedWriter.close();
-                } catch (Exception e) {
-                }
             }
             return Dictionary.ADD_KEY;
         } else {
@@ -59,31 +48,22 @@ public class FileOperation implements ChoiceOfAction {
     }
 
     @Override
-    public void removeRecord(String key) throws KeyNotFoundException   {
+    public void removeRecord(String key) throws KeyNotFoundException {
         boolean deleteLine = false;
         String[] readLines = fileReading().split("\n");
-        BufferedWriter bufferedWriter = null;
-        try {
-            FileWriter fileWriter = new FileWriter(path);
-            bufferedWriter = new BufferedWriter(fileWriter);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
             for (int i = 0; i < readLines.length; i++) {
                 if (!key.equals(readLines[i].split(DictionaryType.getSymbol())[0])) {
                     bufferedWriter.write(readLines[i] + "\n");
-                }
-                else {
+                } else {
                     deleteLine = true;
                 }
             }
             bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                bufferedWriter.close();
-            } catch (Exception e) {
-            }
         }
-        if (!deleteLine){
+        if (!deleteLine) {
             throw new KeyNotFoundException(Dictionary.NO_KEY);
         }
     }

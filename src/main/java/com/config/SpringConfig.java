@@ -1,5 +1,4 @@
 package com.config;
-
 import com.model.DictionaryStorage;
 import com.model.DictionaryType;
 import com.view.Console;
@@ -16,18 +15,21 @@ import java.util.Map;
 @Configuration
 @ComponentScan("com")
 @PropertySource("classpath:config.properties")
+
 public class SpringConfig {
     @Value("#{${valuesMap}}")
     private Map<Integer, String> dictionaryTypeMap;
     private int dictionaryTypeOne = 1;
     private int dictionaryTypeTwo = 2;
+    @Value("${divider}")
+    private String lineDelimiter;
 
     @Bean
     public Map<Integer, DictionaryType> getDictionaryTypeMap() {
         Map<Integer, DictionaryType> dictionaryMap = new HashMap<>();
         for (Map.Entry<Integer, String> pair : dictionaryTypeMap.entrySet()) {
-            String[] m = pair.getValue().split(",");
-            dictionaryMap.put(pair.getKey(), new DictionaryType(m[0], m[1], m[2]));
+            String[] lineSplit  = pair.getValue().split(lineDelimiter);
+            dictionaryMap.put(pair.getKey(), new DictionaryType(lineSplit[0], lineSplit[1], lineSplit[2]));
         }
         return dictionaryMap;
     }
@@ -51,7 +53,6 @@ public class SpringConfig {
         return validator;
     }
 
-
     @Bean("file")
     public DictionaryType getFileDictionary() {
         return getDictionaryTypeMap().get(dictionaryTypeTwo);
@@ -66,5 +67,4 @@ public class SpringConfig {
     public Console getConsole() {
         return new Console();
     }
-
 }

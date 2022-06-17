@@ -1,15 +1,20 @@
 package com.model;
 import java.io.*;
 import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Map;
 
+import java.util.Map;
+import java.util.Scanner;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 
 public class DictionaryStorage {
+
     private Map<String, String> localMap = new HashMap<>();
     private final String path;
+
 
     public DictionaryStorage(String path) {
         this.path = path;
@@ -28,12 +33,14 @@ public class DictionaryStorage {
         }
         return localMap;
     }
-    
+
     private  Map<String, String>  parseLine (String line) {
         String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
         return localMap;
     }
+
+
     public void saveData() {
         File file = new File(path);
         BufferedWriter bf = null;
