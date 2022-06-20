@@ -7,7 +7,7 @@ import com.model.DictionaryType;
 import com.utils.KeyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
+
 
 public class FileOperation implements ChoiceOfAction {
     private final String path;
@@ -22,15 +22,16 @@ public class FileOperation implements ChoiceOfAction {
 
     @Override
     public String fileReading() {
+        StringBuilder data = new StringBuilder();
         String line = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(path))){
             while ((line = reader.readLine()) != null) {
-                System.out.println(line + "\n");
+                data.append(line).append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return line;
+        return  data.toString();
     }
 
     @Override
