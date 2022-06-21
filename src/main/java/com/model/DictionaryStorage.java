@@ -1,14 +1,9 @@
 package com.model;
 import java.io.*;
 import java.util.HashMap;
-
 import java.util.Map;
 import java.util.Scanner;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Component;
-
 
 public class DictionaryStorage {
 
@@ -20,21 +15,25 @@ public class DictionaryStorage {
         this.path = path;
     }
 
-    public Map<String, String> getData(){
+    public Map<String, String> getData() {
+        Scanner scanner = null;
         try {
             File file = new ClassPathResource(path).getFile();
-            Scanner scanner = new Scanner(file);
+            scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 parseLine(scanner.nextLine());
             }
-            scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (scanner != null) {
+                scanner.close();
+            }
         }
         return localMap;
     }
 
-    private  Map<String, String>  parseLine (String line) {
+    private Map<String, String> parseLine(String line) {
         String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
         return localMap;
@@ -42,9 +41,9 @@ public class DictionaryStorage {
 
 
     public void saveData() {
-        File file = new File(path);
         BufferedWriter bf = null;
         try {
+            File file = new ClassPathResource(path).getFile();
             bf = new BufferedWriter(new FileWriter(file));
             for (Map.Entry<String, String> entry : localMap.entrySet()) {
                 bf.write(entry.getKey() + DictionaryType.getSymbol() + entry.getValue());
@@ -61,6 +60,4 @@ public class DictionaryStorage {
             }
         }
     }
-
-
 }

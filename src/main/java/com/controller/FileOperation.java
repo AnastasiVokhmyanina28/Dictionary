@@ -1,10 +1,9 @@
 package com.controller;
 import java.io.*;
 import java.util.Map;
-import java.util.Scanner;
+import com.view.Console;
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
-import com.utils.KeyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -49,7 +48,7 @@ public class FileOperation implements ChoiceOfAction {
     }
 
     @Override
-    public void removeRecord(String key) throws KeyNotFoundException {
+    public String removeRecord(String key)  {
         boolean deleteLine = false;
         String[] readLines = fileReading().split("\n");
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
@@ -61,12 +60,14 @@ public class FileOperation implements ChoiceOfAction {
                 }
             }
             bufferedWriter.flush();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         if (!deleteLine) {
-            throw new KeyNotFoundException(Dictionary.NO_KEY);
+            return Dictionary.NO_KEY;
         }
+        return Console.KEY_DELETE;
     }
 
     @Override

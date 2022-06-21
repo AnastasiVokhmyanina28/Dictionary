@@ -2,6 +2,8 @@ package com.view;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import com.controller.FileOperation;
 import com.model.DictionaryType;
 import com.controller.Dictionary;
 import com.controller.ChoiceOfAction;
@@ -46,23 +48,22 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void systemSelection() {
+    private void systemSelection(int choice) {
         Map<Integer, ChoiceOfAction> dictionaries = new HashMap<>();
         for (Map.Entry<Integer, DictionaryType> pair : dictionaryTypeMaps.entrySet()) {
-            if (pair.getKey() == null) {
-                System.out.println(NO_COMMAND);
-            } else {
+            if (choice == 1) {
                 dictionaries.put(pair.getKey(), new Dictionary(pair.getValue()));
+            }
+            else {
+                dictionaries.put(pair.getKey(), new FileOperation(pair.getValue()));
             }
         }
         this.mapDictionaries = dictionaries;
     }
 
-
      public void start() {
          while (mapDictionaries == null) {
-             systemSelectionMenu();
-             systemSelection();
+             systemSelection(systemSelectionMenu());
          }
         while (dictionary == null) {
             int dictionarySelection = this.menuChoiceDictionary();
@@ -110,8 +111,7 @@ public class Console {
                 System.out.println(ENTER_KEY);
                 String userKey = scanner.next();
                 try {
-                    dictionary.removeRecord(userKey);
-                    System.out.println(KEY_DELETE);
+                   System.out.println(dictionary.removeRecord(userKey));
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

@@ -4,7 +4,7 @@ import java.util.Map;
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
 import com.model.DictionaryStorage;
-import com.utils.KeyNotFoundException;
+import com.view.Console;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -35,14 +35,14 @@ public class Dictionary implements ChoiceOfAction {
 
 
     @Override
-    public void removeRecord(String key) throws KeyNotFoundException {
+    public String removeRecord(String key)  {
         if (localMap.containsKey(key)) {
             localMap.remove(key);
             saveData();
         } else {
-            throw new KeyNotFoundException(NO_KEY);
+          return NO_KEY;
         }
-
+        return Console.KEY_DELETE;
     }
 
     @Override
