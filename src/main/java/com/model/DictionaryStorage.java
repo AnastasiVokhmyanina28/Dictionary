@@ -16,48 +16,32 @@ public class DictionaryStorage {
     }
 
     public Map<String, String> getData() {
-        Scanner scanner = null;
-        try {
-            File file = new ClassPathResource(path).getFile();
-            scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                parseLine(scanner.nextLine());
+      String line = "";
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(new ClassPathResource(path).getFile()))) {
+            while ((line = bufferedReader.readLine()) !=null) {
+                parseLine(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (scanner != null) {
-                scanner.close();
-            }
         }
         return localMap;
     }
 
-    private Map<String, String> parseLine(String line) {
+    private void parseLine(String line) {
         String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
-        return localMap;
     }
 
 
     public void saveData() {
-        BufferedWriter bf = null;
-        try {
-            File file = new ClassPathResource(path).getFile();
-            bf = new BufferedWriter(new FileWriter(file));
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile()))){
             for (Map.Entry<String, String> entry : localMap.entrySet()) {
-                bf.write(entry.getKey() + DictionaryType.getSymbol() + entry.getValue());
-                bf.newLine();
+                bufferedWriter.write(entry.getKey() + DictionaryType.getSymbol() + entry.getValue());
+                bufferedWriter.newLine();
             }
-            bf.flush();
+            bufferedWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                bf.close();
-            } catch (Exception e) {
-
-            }
         }
     }
 }
