@@ -1,13 +1,15 @@
-package controller;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-import config.DictionaryType;
-import model.DictionaryStorage;
-import view.Console;
-import controller.ChoiceOfAction;
-import utils.KeyNotFoundException;
+package com.controller;
 
+import java.util.Map;
+import com.controller.validation.Validator;
+import com.model.DictionaryType;
+import com.model.DictionaryStorage;
+import com.view.Console;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Dictionary implements ChoiceOfAction {
     public static final String NO_KEY = "No key found!";
     public static final String SIMILARITY_TO_THE_PATTERN = "No matches with the template were found!";
@@ -16,27 +18,31 @@ public class Dictionary implements ChoiceOfAction {
     private Map<String, String> localMap;
     private DictionaryStorage dictionaryStorage;
     private DictionaryType dictionaryType;
+    @Autowired
+    private Map<DictionaryType, Validator> validator;
+
+
+    @Autowired
+    public Dictionary(@Qualifier("map")DictionaryType dictionaryType) {
+        this.dictionaryType = dictionaryType;
+        this.dictionaryStorage = new DictionaryStorage(dictionaryType.getDictionaryPath());
+        localMap =  dictionaryStorage.getData();
+    }
 
     public void saveData() {
         dictionaryStorage.saveData();
     }
 
-    public Dictionary(String path, DictionaryType dictionaryType, Map<String, String> localMap) {
-        this.localMap = localMap;
-        this.dictionaryType = dictionaryType;
-        this.dictionaryStorage = new DictionaryStorage(path, localMap);
-        dictionaryStorage.getData();
-    }
 
     @Override
-    public void removeRecord(String key) throws KeyNotFoundException {
+    public String removeRecord(String key)  {
         if (localMap.containsKey(key)) {
             localMap.remove(key);
             saveData();
         } else {
-            throw new KeyNotFoundException(NO_KEY);
+          return NO_KEY;
         }
-
+        return Console.KEY_DELETE;
     }
 
     @Override
@@ -45,7 +51,6 @@ public class Dictionary implements ChoiceOfAction {
         for (Map.Entry<String,String> pair : localMap.entrySet()) {
             dictionaryContent.append(pair.getKey() + DictionaryType.getSymbol() + pair.getValue() + "\n" ) ;
         }
-        saveData();
         return dictionaryContent.toString();
     }
 
@@ -54,7 +59,6 @@ public class Dictionary implements ChoiceOfAction {
         String search = localMap.get(key);
         if (search != null) {
             String searchResult = key + DictionaryType.getSymbol() + search;
-            saveData();
             return searchResult;
         } else {
             return KEY_DOES_NOT_EXIST;
@@ -64,7 +68,7 @@ public class Dictionary implements ChoiceOfAction {
 
     @Override
     public String addAnEntry(String key, String value) {
-        if (keyCheck(key) && valueCheck(value)) {
+        if (validator.get(dictionaryType).validPair(key, value)) {
             localMap.put(key, value);
             saveData();
             return ADD_KEY;
@@ -72,14 +76,5 @@ public class Dictionary implements ChoiceOfAction {
             return SIMILARITY_TO_THE_PATTERN;
         }
     }
-    @Override
-    public boolean keyCheck(String key) {
-        String patKey =  dictionaryType.getPatternKey();
-        return Pattern.matches(patKey, key);
-    }
-    @Override
-    public boolean valueCheck(String value) {
-        String patValue =  dictionaryType.getPatternValue();
-        return Pattern.matches(patValue, value);
-    }
+
 }

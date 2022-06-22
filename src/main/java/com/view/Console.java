@@ -1,12 +1,13 @@
-package view;
+package com.view;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import config.DictionaryType;
-import controller.Dictionary;
-import controller.FileOperation;
-import model.DictionaryStorage;
-import controller.ChoiceOfAction;
+
+import com.controller.FileOperation;
+import com.model.DictionaryType;
+import com.controller.Dictionary;
+import com.controller.ChoiceOfAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class Console {
 
@@ -32,13 +33,14 @@ public class Console {
     private ChoiceOfAction dictionary = null;
     private Map<Integer, ChoiceOfAction> mapDictionaries;
     private boolean isRunningConsole = false;
-    private boolean dictionaryСhoice = false;
+    @Autowired
+    private Map<Integer, DictionaryType> dictionaryTypeMaps;
 
     public Console() {
         scanner = new Scanner(System.in, "windows-1251");
     }
 
-    public int startp() {
+    public int systemSelectionMenu() {
         System.out.println(SYSTEM);
         System.out.println(MAP_DICTIONARY);
         System.out.println(FILE_DICTIONARY);
@@ -46,40 +48,23 @@ public class Console {
         return scanner.nextInt();
     }
 
-    private void startS(int choice) {
+    private void systemSelection(int choice) {
         Map<Integer, ChoiceOfAction> dictionaries = new HashMap<>();
-        for (DictionaryType dictionaryType : DictionaryType.values()) {
-           if (choice == DictionaryType.DICTIONARY_ONE.getNumber()){
-                dictionaries.put(dictionaryType.getNumber(), creation(dictionaryType)) ;
-            } else if (choice == DictionaryType.DICTIONARY_TWO.getNumber()) {
-                dictionaries.put(dictionaryType.getNumber(), creation1(dictionaryType)) ;
-            } else {
-                System.out.println(NO_COMMAND);
-               return;
-           }
+        for (Map.Entry<Integer, DictionaryType> pair : dictionaryTypeMaps.entrySet()) {
+            if (choice == 1) {
+                dictionaries.put(pair.getKey(), new Dictionary(pair.getValue()));
+            }
+            else {
+                dictionaries.put(pair.getKey(), new FileOperation(pair.getValue()));
+            }
         }
         this.mapDictionaries = dictionaries;
     }
 
-    public static Dictionary creation(DictionaryType dictionaryType) {
-        Map<String, String> localMap = new HashMap<>();
-        String dictionaryPath = dictionaryType.getDictionaryPath();
-        var data = new DictionaryStorage(dictionaryType.getDictionaryPath(), localMap).getData();
-        return new Dictionary(dictionaryPath, dictionaryType, data);
-    }
-
-    public static FileOperation creation1(DictionaryType dictionaryType) {
-        String dictionaryPath = dictionaryType.getDictionaryPath();
-        return new FileOperation(dictionaryPath, dictionaryType);
-    }
-
      public void start() {
-        int choice = 0 ;
-       while (mapDictionaries == null){
-           choice = this.startp();
-
-           this.startS(choice);
-       }
+         while (mapDictionaries == null) {
+             systemSelection(systemSelectionMenu());
+         }
         while (dictionary == null) {
             int dictionarySelection = this.menuChoiceDictionary();
             if (mapDictionaries != null) {
@@ -126,8 +111,7 @@ public class Console {
                 System.out.println(ENTER_KEY);
                 String userKey = scanner.next();
                 try {
-                    dictionary.removeRecord(userKey);
-                    System.out.println(KEY_DELETE);
+                   System.out.println(dictionary.removeRecord(userKey));
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

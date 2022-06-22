@@ -1,17 +1,14 @@
-package config;
-public enum DictionaryType {
+package com.model;
 
-    DICTIONARY_ONE(1, "^[a-zA-Z]{4}$", "[а-яёА-ЯЁ]+", "../resources/Dictionary.txt"),
-    DICTIONARY_TWO(2, "^[0-9]{5}$", "[а-яёА-ЯЁ]+", "../resources/digitalDictionary.txt");
+
+public class DictionaryType {
 
     private static final String splitChar = ":";
-    private final Integer number;
     private final String patternKey;
     private final String patternValue;
     private final String dictionaryPath;
 
-    DictionaryType(Integer number, String patternKey, String patternValue, String dictionaryPath) {
-        this.number = number;
+    public DictionaryType (String patternKey, String patternValue, String dictionaryPath) {
         this.patternKey = patternKey;
         this.patternValue = patternValue;
         this.dictionaryPath = dictionaryPath;
@@ -19,10 +16,6 @@ public enum DictionaryType {
 
     public static String getSymbol() {
         return splitChar;
-    }
-
-    public Integer getNumber() {
-        return number;
     }
 
     public String getPatternKey() {
