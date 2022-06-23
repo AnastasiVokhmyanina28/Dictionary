@@ -2,19 +2,17 @@ package com.model;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import org.springframework.core.io.ClassPathResource;
 
 public class DictionaryStorage {
 
-    private Map<String, String> localMap = new HashMap<>();
+    private final Map<String, String> localMap = new HashMap<>();
     private final String path;
 
 
     public DictionaryStorage(String path) {
         this.path = path;
     }
-
     public Map<String, String> getData() {
       String line = "";
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(new ClassPathResource(path).getFile()))) {

@@ -15,9 +15,9 @@ public class Dictionary implements ChoiceOfAction {
     public static final String SIMILARITY_TO_THE_PATTERN = "No matches with the template were found!";
     public static final String ADD_KEY = "The key has been successfully added!";
     public static final String KEY_DOES_NOT_EXIST = "This key does not exist!";
-    private Map<String, String> localMap;
-    private DictionaryStorage dictionaryStorage;
-    private DictionaryType dictionaryType;
+    private final Map<String, String> localMap;
+    private final DictionaryStorage dictionaryStorage;
+    private final DictionaryType dictionaryType;
     @Autowired
     private Map<DictionaryType, Validator> validator;
 
