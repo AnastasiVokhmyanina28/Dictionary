@@ -51,7 +51,6 @@ public class Dictionary implements ChoiceOfAction {
         for (Map.Entry<String,String> pair : localMap.entrySet()) {
             dictionaryContent.append(pair.getKey() + DictionaryType.getSymbol() + pair.getValue() + "\n" ) ;
         }
-        saveData();
         return dictionaryContent.toString();
     }
 
@@ -60,7 +59,6 @@ public class Dictionary implements ChoiceOfAction {
         String search = localMap.get(key);
         if (search != null) {
             String searchResult = key + DictionaryType.getSymbol() + search;
-            saveData();
             return searchResult;
         } else {
             return KEY_DOES_NOT_EXIST;
