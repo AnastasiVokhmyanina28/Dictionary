@@ -15,18 +15,15 @@ public class Dictionary implements ChoiceOfAction {
     public static final String SIMILARITY_TO_THE_PATTERN = "No matches with the template were found!";
     public static final String ADD_KEY = "The key has been successfully added!";
     public static final String KEY_DOES_NOT_EXIST = "This key does not exist!";
-    private Map<String, String> localMap;
-    private DictionaryStorage dictionaryStorage;
-    private DictionaryType dictionaryType;
-    @Autowired
-    private Map<DictionaryType, Validator> validator;
-
+    private final Map<String, String> localMap;
+    private final DictionaryStorage dictionaryStorage;
+    private final Validator validator;
 
     @Autowired
     public Dictionary(@Qualifier("map")DictionaryType dictionaryType) {
-        this.dictionaryType = dictionaryType;
         this.dictionaryStorage = new DictionaryStorage(dictionaryType.getDictionaryPath());
         localMap =  dictionaryStorage.getData();
+        this.validator = new Validator(dictionaryType.getPatternKey(), dictionaryType.getPatternValue());
     }
 
     public void saveData() {
@@ -58,8 +55,7 @@ public class Dictionary implements ChoiceOfAction {
     public String search(String key) {
         String search = localMap.get(key);
         if (search != null) {
-            String searchResult = key + DictionaryType.getSymbol() + search;
-            return searchResult;
+            return key + DictionaryType.getSymbol() + search;
         } else {
             return KEY_DOES_NOT_EXIST;
         }
@@ -68,7 +64,7 @@ public class Dictionary implements ChoiceOfAction {
 
     @Override
     public String addAnEntry(String key, String value) {
-        if (validator.get(dictionaryType).validPair(key, value)) {
+        if (validator.validPair(key, value)) {
             localMap.put(key, value);
             saveData();
             return ADD_KEY;

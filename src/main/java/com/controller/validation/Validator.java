@@ -3,7 +3,6 @@ package com.controller.validation;
 import java.util.regex.Pattern;
 
 public class Validator implements ValidationValue {
-
     private final String patternKey;
     private final String patternValue;
     public Validator(String patternKey, String patternValue){

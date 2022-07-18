@@ -8,7 +8,11 @@ import com.model.DictionaryType;
 import com.controller.Dictionary;
 import com.controller.ChoiceOfAction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@Controller
+@RequestMapping("/dictionary")
 public class Console {
 
     public static final String NO_COMMAND = "There is no such command. Try again!";

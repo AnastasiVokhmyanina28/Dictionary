@@ -2,12 +2,11 @@ package com.model;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import org.springframework.core.io.ClassPathResource;
 
 public class DictionaryStorage {
 
-    private Map<String, String> localMap = new HashMap<>();
+    private final Map<String, String> localMap = new HashMap<>();
     private final String path;
 
 
