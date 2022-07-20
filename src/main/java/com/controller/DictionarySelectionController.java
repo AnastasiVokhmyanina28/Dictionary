@@ -28,9 +28,9 @@ public class DictionarySelectionController {
     }
     @PostMapping("selection")
     public String dictionarySelection(@RequestParam(name = "choiceDictionary") Integer choiceDictionary,
-                                      @RequestParam(name = "systemChoice") Integer systemChoice  ){
+                                      @RequestParam(name = "systemChoice") String systemChoice){
 
-        if(systemChoice == 1){
+        if(systemChoice.equals("map")){
             dictionary = new Dictionary(dictionaryTypeMaps.get(choiceDictionary));
         }
         else {
