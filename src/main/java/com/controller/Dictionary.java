@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
@@ -21,9 +23,9 @@ public class Dictionary implements ChoiceOfAction {
 
     @Autowired
     public Dictionary(@Qualifier("map")DictionaryType dictionaryType) {
+        this.validator = new Validator(dictionaryType.getPatternKey(), dictionaryType.getPatternValue());
         this.dictionaryStorage = new DictionaryStorage(dictionaryType.getDictionaryPath());
         localMap =  dictionaryStorage.getData();
-        this.validator = new Validator(dictionaryType.getPatternKey(), dictionaryType.getPatternValue());
     }
 
     public void saveData() {
@@ -52,10 +54,19 @@ public class Dictionary implements ChoiceOfAction {
     }
 
     @Override
+    public List<String> fileReadingList() {
+        List<String> dictionaryContent = new ArrayList<>();
+        for (Map.Entry<String,String> pair : localMap.entrySet()) {
+            dictionaryContent.add(pair.getKey() + DictionaryType.getSymbol() + pair.getValue()  ) ;
+        }
+        return dictionaryContent;
+    }
+
+    @Override
     public String search(String key) {
         String search = localMap.get(key);
         if (search != null) {
-            return key + DictionaryType.getSymbol() + search;
+            return  key + DictionaryType.getSymbol() + search;
         } else {
             return KEY_DOES_NOT_EXIST;
         }

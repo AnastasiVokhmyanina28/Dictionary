@@ -2,7 +2,6 @@ package com.view;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-
 import com.controller.FileOperation;
 import com.model.DictionaryType;
 import com.controller.Dictionary;

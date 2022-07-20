@@ -18,13 +18,13 @@ public class DictionarySelectionController {
 
     @GetMapping("dictionaries")
     public String chooseDictionary(){
-        return "SelectingADictionary";
+     return "SelectingADictionary";
     }
 
     @GetMapping("selection")
     public String dictionarySelection(@RequestParam(name = "choise") Integer choise){
-        dictionary = new FileOperation(dictionaryTypeMaps.get(choise));
-        return "SelectAnAction";
+    dictionary = new FileOperation(dictionaryTypeMaps.get(choise));
+    return "SelectAnAction";
     }
 
     @PostMapping("reading")
@@ -39,7 +39,7 @@ public class DictionarySelectionController {
 
     @PostMapping("delete")
     public String removeRecord(String key, Model model) {
-        model.addAttribute("remove", dictionary.removeRecord(key));
+         model.addAttribute("remove", dictionary.removeRecord(key));
         return "Delete";
     }
 
@@ -51,7 +51,7 @@ public class DictionarySelectionController {
     @PostMapping("adding")
     public String addAnEntry(@RequestParam(value = "key") String key,
                              @RequestParam(value = "value") String value,
-                             Model model){
+                             Model model) {
         model.addAttribute("add", dictionary.addAnEntry(key, value));
         return "AddEntryToDictionary";
     }
@@ -63,7 +63,7 @@ public class DictionarySelectionController {
 
     @PostMapping("search")
     public String search(@RequestParam(value = "key") String key,
-                         Model model){
+                         Model model) {
         model.addAttribute("search", dictionary.search(key));
         return "Search";
     }

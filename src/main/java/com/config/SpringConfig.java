@@ -29,7 +29,6 @@ public class SpringConfig implements WebMvcConfigurer {
     private Map<Integer, String> dictionaryTypeMap;
     private int dictionaryTypeOne = 1;
     private int dictionaryTypeTwo = 2;
-
     private final ApplicationContext applicationContext;
     @Value("${divider}")
     private String lineDelimiter;

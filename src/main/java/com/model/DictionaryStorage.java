@@ -31,7 +31,6 @@ public class DictionaryStorage {
         localMap.put(lineParts[0], lineParts[1]);
     }
 
-
     public void saveData() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile()))){
             for (Map.Entry<String, String> entry : localMap.entrySet()) {
