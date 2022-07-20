@@ -5,7 +5,6 @@ import java.util.List;
 import com.view.Console;
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 
 
@@ -14,7 +13,7 @@ public class FileOperation implements ChoiceOfAction {
     private static final boolean flexibility = true;
     private final Validator validator;
 
-    public FileOperation(@Qualifier("file")DictionaryType dictionaryType)  {
+    public FileOperation(DictionaryType dictionaryType)  {
         this.validator  = new Validator(dictionaryType.getPatternKey(), dictionaryType.getPatternValue());
         this.path = dictionaryType.getDictionaryPath();
     }

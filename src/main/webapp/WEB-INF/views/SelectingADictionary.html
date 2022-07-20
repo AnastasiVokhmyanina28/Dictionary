@@ -7,16 +7,25 @@
 <body>
 
 <h3>Select a vocabulary</h3>
-<form action="/dictionary/selection" target="_self">
+<form action="/dictionary/selection" method="post" target="_self">
 
     <label>
-        <select name="choise">
+        <select name="systemChoice">
+            <option value="1">map</option>
+            <option value="2">file</option>
+        </select>
+    </label>
+<br>
+    <br>
+
+    <label>
+        <select name="choiceDictionary">
             <option value="1">English-Russian dictionary</option>
             <option value="2">Digital dictionary</option>
         </select>
     </label>
 
-    <p><input type="submit" value="Отправить"></p>
+    <p><input type="submit" value="Send"></p>
 </form>
 </body>
 </html>

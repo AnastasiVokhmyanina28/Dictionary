@@ -14,7 +14,8 @@ import java.util.Map;
 public class DictionarySelectionController {
     @Autowired
     private Map<Integer, DictionaryType> dictionaryTypeMaps;
-    ChoiceOfAction dictionary;
+
+    private ChoiceOfAction dictionary;
 
     @GetMapping("dictionaries")
     public String chooseDictionary(){
@@ -22,9 +23,20 @@ public class DictionarySelectionController {
     }
 
     @GetMapping("selection")
-    public String dictionarySelection(@RequestParam(name = "choise") Integer choise){
-    dictionary = new FileOperation(dictionaryTypeMaps.get(choise));
-    return "SelectAnAction";
+    public String dictionarySelection() {
+        return "SelectAnAction";
+    }
+    @PostMapping("selection")
+    public String dictionarySelection(@RequestParam(name = "choiceDictionary") Integer choiceDictionary,
+                                      @RequestParam(name = "systemChoice") Integer systemChoice  ){
+
+        if(systemChoice == 1){
+            dictionary = new Dictionary(dictionaryTypeMaps.get(choiceDictionary));
+        }
+        else {
+            dictionary = new FileOperation(dictionaryTypeMaps.get(choiceDictionary));
+        }
+        return "SelectAnAction";
     }
 
     @PostMapping("reading")
@@ -38,7 +50,8 @@ public class DictionarySelectionController {
     }
 
     @PostMapping("delete")
-    public String removeRecord(String key, Model model) {
+    public String removeRecord(@RequestParam(value = "key") String key,
+                               Model model) {
          model.addAttribute("remove", dictionary.removeRecord(key));
         return "Delete";
     }
@@ -48,7 +61,7 @@ public class DictionarySelectionController {
         return "AddEntryToDictionary";
     }
 
-    @PostMapping("adding")
+    @PostMapping("add")
     public String addAnEntry(@RequestParam(value = "key") String key,
                              @RequestParam(value = "value") String value,
                              Model model) {

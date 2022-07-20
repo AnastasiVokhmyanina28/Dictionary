@@ -12,10 +12,12 @@
         <input type="text" name="key">
     </label><br>
     <tr th:text="${search}">key</tr> <br>
-    <p><input type="submit" value="Отправить"></p>
+    <p><input type="submit" value="Send"></p>
     <br>
 </form>
 
-<button> <a href="#" onclick="history.go(-2)">Go Back</a></button>
+<form action="/dictionary/selection" >
+    <p><input type="submit"  value="Back" ></p>
+</form>
 </body>
 </html>
