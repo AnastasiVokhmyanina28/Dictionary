@@ -1,7 +1,7 @@
 package com.controller;
 
-import com.model.DictionaryType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,28 +13,32 @@ import java.util.Map;
 @RequestMapping("dictionary")
 public class DictionarySelectionController {
     @Autowired
-    private Map<Integer, DictionaryType> dictionaryTypeMaps;
+    @Lazy
+    Map<Integer, FileOperation> fileOperationMap;
+    @Autowired
+    @Lazy
+    Map<Integer, Dictionary> dictionaryMap;
 
     private ChoiceOfAction dictionary;
 
     @GetMapping("dictionaries")
-    public String chooseDictionary(){
-     return "SelectingADictionary";
+    public String chooseDictionary() {
+        return "SelectingADictionary";
     }
 
     @GetMapping("selection")
     public String dictionarySelection() {
         return "SelectAnAction";
     }
+
     @PostMapping("selection")
     public String dictionarySelection(@RequestParam(name = "choiceDictionary") Integer choiceDictionary,
-                                      @RequestParam(name = "systemChoice") Integer systemChoice  ){
+                                      @RequestParam(name = "systemChoice") Integer systemChoice) {
 
-        if(systemChoice == 1){
-            dictionary = new Dictionary(dictionaryTypeMaps.get(choiceDictionary));
-        }
-        else {
-            dictionary = new FileOperation(dictionaryTypeMaps.get(choiceDictionary));
+        if (systemChoice == 1) {
+            dictionary = dictionaryMap.get(choiceDictionary);
+        } else {
+            dictionary = fileOperationMap.get(choiceDictionary);
         }
         return "SelectAnAction";
     }
@@ -44,6 +48,7 @@ public class DictionarySelectionController {
         model.addAttribute("pairs", new ArrayList<>(Arrays.asList(dictionary.fileReading().split("\n"))));
         return "Reading";
     }
+
     @GetMapping("delete")
     public String removeRecord() {
         return "Delete";
@@ -52,7 +57,7 @@ public class DictionarySelectionController {
     @PostMapping("delete")
     public String removeRecord(@RequestParam(value = "key") String key,
                                Model model) {
-         model.addAttribute("remove", dictionary.removeRecord(key));
+        model.addAttribute("remove", dictionary.removeRecord(key));
         return "Delete";
     }
 

@@ -21,7 +21,7 @@ public class FileOperation implements ChoiceOfAction {
     @Override
     public String fileReading() {
         StringBuilder data = new StringBuilder();
-        String line = "";
+        String line;
         try (BufferedReader reader = new BufferedReader(new FileReader(new ClassPathResource(path).getFile()))){
             while ((line = reader.readLine()) != null) {
                 data.append(line).append("\n");
@@ -35,7 +35,7 @@ public class FileOperation implements ChoiceOfAction {
     @Override
     public List<String> fileReadingList(){
         List<String> data = new ArrayList<>();
-        String line = "";
+        String line ;
         try(BufferedReader reader = new BufferedReader(new FileReader(new ClassPathResource(path).getFile()))){
             while ((line = reader.readLine()) != null) {
                 data.add(line);
@@ -66,9 +66,9 @@ public class FileOperation implements ChoiceOfAction {
         boolean deleteLine = false;
         String[] readLines = fileReading().split("\n");
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile()))) {
-            for (int i = 0; i < readLines.length; i++) {
-                if (!key.equals(readLines[i].split(DictionaryType.getSymbol())[0])) {
-                    bufferedWriter.write(readLines[i] + "\n");
+            for (String readLine : readLines) {
+                if (!key.equals(readLine.split(DictionaryType.getSymbol())[0])) {
+                    bufferedWriter.write(readLine + "\n");
                 } else {
                     deleteLine = true;
                 }
@@ -87,9 +87,9 @@ public class FileOperation implements ChoiceOfAction {
     @Override
     public String search(String key) {
         String[] stringsSearch = fileReading().split("\n");
-        for (int i = 0; i < stringsSearch.length; i++) {
-            if (key.equals(stringsSearch[i].split(DictionaryType.getSymbol())[0])) {
-                return stringsSearch[i];
+        for (String search : stringsSearch) {
+            if (key.equals(search.split(DictionaryType.getSymbol())[0])) {
+                return search;
             }
         }
         return Dictionary.NO_KEY;

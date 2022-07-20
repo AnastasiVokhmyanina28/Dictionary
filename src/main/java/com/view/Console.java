@@ -7,7 +7,7 @@ import com.model.DictionaryType;
 import com.controller.Dictionary;
 import com.controller.ChoiceOfAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Lazy;
 
 public class Console {
 
@@ -31,10 +31,14 @@ public class Console {
     public static final String FILE_DICTIONARY = "\t2 Work with file";
     private final Scanner scanner;
     private ChoiceOfAction dictionary = null;
-    private Map<Integer, ChoiceOfAction> mapDictionaries;
+    private final Map<Integer, ChoiceOfAction> mapDictionaries = new HashMap<>();
     private boolean isRunningConsole = false;
     @Autowired
-    private Map<Integer, DictionaryType> dictionaryTypeMaps;
+    @Lazy
+    Map<Integer, FileOperation> fileOperationMap;
+    @Autowired
+    @Lazy
+    Map<Integer, Dictionary> dictionaryMap;
 
     public Console() {
         scanner = new Scanner(System.in, "windows-1251");
@@ -49,25 +53,21 @@ public class Console {
     }
 
     private void systemSelection(int choice) {
-        Map<Integer, ChoiceOfAction> dictionaries = new HashMap<>();
-        for (Map.Entry<Integer, DictionaryType> pair : dictionaryTypeMaps.entrySet()) {
             if (choice == 1) {
-                dictionaries.put(pair.getKey(), new Dictionary(pair.getValue()));
+                this.mapDictionaries.putAll(dictionaryMap);
             }
             else {
-                dictionaries.put(pair.getKey(), new FileOperation(pair.getValue()));
+                this.mapDictionaries.putAll(fileOperationMap);
             }
-        }
-        this.mapDictionaries = dictionaries;
     }
 
      public void start() {
-         while (mapDictionaries == null) {
+         while (mapDictionaries.isEmpty()) {
              systemSelection(systemSelectionMenu());
          }
         while (dictionary == null) {
             int dictionarySelection = this.menuChoiceDictionary();
-            if (mapDictionaries != null) {
+            if (mapDictionaries.isEmpty()) {
                 chooseDictionary(dictionarySelection);
             }
         }
@@ -127,7 +127,6 @@ public class Console {
                 System.out.println(ENTER_VALUE);
                 String value = scanner.next();
                 System.out.println(dictionary.addAnEntry(key, value));
-
                 break;
             case 5:
                 this.dictionary = null;
