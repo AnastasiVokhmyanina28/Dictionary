@@ -45,7 +45,7 @@ public class DictionarySelectionController {
 
     @PostMapping("reading")
     public String fileReading(Model model) {
-        model.addAttribute("pairs", dictionary.fileReading().split("\n"));
+        model.addAttribute("pairs", dictionary.fileReadingList());
         return "Reading";
     }
 
