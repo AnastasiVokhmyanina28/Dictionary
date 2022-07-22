@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 @Controller
@@ -14,7 +12,6 @@ import java.util.Map;
 public class DictionarySelectionController {
     @Autowired
     private Map<Integer, DictionaryType> dictionaryTypeMaps;
-
     private ChoiceOfAction dictionary;
 
     @GetMapping("dictionaries")
@@ -41,7 +38,7 @@ public class DictionarySelectionController {
 
     @PostMapping("reading")
     public String fileReading(Model model) {
-        model.addAttribute("pairs", new ArrayList<>(Arrays.asList(dictionary.fileReading().split("\n"))));
+        model.addAttribute("pairs", dictionary.fileReadingList());
         return "Reading";
     }
     @GetMapping("delete")

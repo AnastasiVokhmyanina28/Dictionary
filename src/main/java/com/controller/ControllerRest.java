@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -19,31 +18,27 @@ public class ControllerRest {
     @Autowired
     private Map<Integer, DictionaryType> dictionaryTypeMaps;
 
-
     public ChoiceOfAction dictionaryType(Integer choiceDictionary, String systemChoice) {
-
+        ChoiceOfAction dictionary;
         if (systemChoice.equals("map")) {
-            return new Dictionary(dictionaryTypeMaps.get(choiceDictionary));
+            dictionary =  new Dictionary(dictionaryTypeMaps.get(choiceDictionary));
         } else {
-            return new FileOperation(dictionaryTypeMaps.get(choiceDictionary));
+            dictionary =  new FileOperation(dictionaryTypeMaps.get(choiceDictionary));
         }
-
+        return dictionary;
     }
 
     @Operation(summary = "reading", description = "Allows you to read data from the dictionary")
     @GetMapping("read")
-    @ResponseBody
     public ResponseEntity<?> fileReading(@RequestParam(value = "choiceDictionary") Integer choiceDictionary,
                                          @RequestParam(value = "systemChoice") String systemChoice) {
         ChoiceOfAction dictionary = dictionaryType(choiceDictionary, systemChoice);
-        List<String> ReadMethodCall = dictionary.fileReadingList();
-        return new ResponseEntity<>(ReadMethodCall, HttpStatus.OK);
+        List<String> dictionaryReading = dictionary.fileReadingList();
+        return new ResponseEntity<>(dictionaryReading, HttpStatus.OK);
     }
-
 
     @Operation(summary = "remove", description = "Allows you to delete data from the dictionary")
     @PostMapping("delete")
-    @ResponseBody
     public ResponseEntity<?> removeRecord(@RequestParam(value = "choiceDictionary") Integer choiceDictionary,
                                           @RequestParam(value = "systemChoice") String systemChoice,
                                           @RequestParam(value = "key") String key) {
@@ -55,7 +50,6 @@ public class ControllerRest {
 
     @Operation(summary = "search", description = "Allows you to search data from the dictionary")
     @GetMapping("search")
-    @ResponseBody
     public ResponseEntity<?> search(@RequestParam(value = "choiceDictionary") Integer choiceDictionary,
                                     @RequestParam(value = "systemChoice") String systemChoice,
                                     @RequestParam(value = "key") String key) {
@@ -66,7 +60,6 @@ public class ControllerRest {
 
     @Operation(summary = "add", description = "Allows you to add data to the dictionary")
     @PutMapping("add")
-    @ResponseBody
     public ResponseEntity<?> add(@RequestParam(value = "choiceDictionary") Integer choiceDictionary,
                                  @RequestParam(value = "systemChoice") String systemChoice,
                                  @RequestParam(value = "key") String key,
