@@ -5,20 +5,14 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 @Controller
 @RequestMapping("dictionary")
 public class DictionarySelectionController {
     @Autowired
-    @Lazy
-    Map<Integer, FileOperation> fileOperationMap;
-    @Autowired
-    @Lazy
-    Map<Integer, Dictionary> dictionaryMap;
-
+    private Map<Integer, DictionaryType> dictionaryTypeMaps;
+    
     private ChoiceOfAction dictionary;
 
     @GetMapping("dictionaries")
@@ -31,14 +25,14 @@ public class DictionarySelectionController {
         return "SelectAnAction";
     }
 
-    @PostMapping("selection")
+     @PostMapping("selection")
     public String dictionarySelection(@RequestParam(name = "choiceDictionary") Integer choiceDictionary,
-                                      @RequestParam(name = "systemChoice") Integer systemChoice) {
-
-        if (systemChoice == 1) {
-            dictionary = dictionaryMap.get(choiceDictionary);
-        } else {
-            dictionary = fileOperationMap.get(choiceDictionary);
+                                      @RequestParam(name = "systemChoice") String systemChoice){
+        if(systemChoice.equals("map")){
+            dictionary = new Dictionary(dictionaryTypeMaps.get(choiceDictionary));
+        }
+        else {
+            dictionary = new FileOperation(dictionaryTypeMaps.get(choiceDictionary));
         }
         return "SelectAnAction";
     }
