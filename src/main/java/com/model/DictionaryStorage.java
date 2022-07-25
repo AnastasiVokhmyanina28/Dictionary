@@ -2,12 +2,11 @@ package com.model;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import org.springframework.core.io.ClassPathResource;
 
 public class DictionaryStorage {
 
-    private Map<String, String> localMap = new HashMap<>();
+    private final Map<String, String> localMap = new HashMap<>();
     private final String path;
 
 
@@ -31,7 +30,6 @@ public class DictionaryStorage {
         String[] lineParts = line.split(DictionaryType.getSymbol());
         localMap.put(lineParts[0], lineParts[1]);
     }
-
 
     public void saveData() {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile()))){

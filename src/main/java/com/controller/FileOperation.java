@@ -1,29 +1,28 @@
 package com.controller;
 import java.io.*;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import com.view.Console;
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ClassPathResource;
 
 
 public class FileOperation implements ChoiceOfAction {
     private final String path;
-    private DictionaryType dictionaryType;
-    @Autowired
-    private Map<DictionaryType, Validator> validator;
+    private static final boolean flexibility = true;
+    private final Validator validator;
 
-    public FileOperation(@Qualifier("file")DictionaryType dictionaryType)  {
-        this.dictionaryType = dictionaryType;
+    public FileOperation(DictionaryType dictionaryType)  {
+        this.validator  = new Validator(dictionaryType.getPatternKey(), dictionaryType.getPatternValue());
         this.path = dictionaryType.getDictionaryPath();
     }
 
     @Override
     public String fileReading() {
         StringBuilder data = new StringBuilder();
-        String line = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))){
+        String line;
+        try (BufferedReader reader = new BufferedReader(new FileReader(new ClassPathResource(path).getFile()))){
             while ((line = reader.readLine()) != null) {
                 data.append(line).append("\n");
             }
@@ -34,12 +33,27 @@ public class FileOperation implements ChoiceOfAction {
     }
 
     @Override
+    public List<String> fileReadingList(){
+        List<String> data = new ArrayList<>();
+        String line ;
+        try(BufferedReader reader = new BufferedReader(new FileReader(new ClassPathResource(path).getFile()))){
+            while ((line = reader.readLine()) != null) {
+                data.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+     return data;
+    }
+
+    @Override
     public String addAnEntry(String key, String value) {
-        if (validator.get(dictionaryType).validPair(key, value)) {
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path, true))) {
+        if (validator.validPair(key, value)) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile(), flexibility))) {
                 bufferedWriter.write(key + DictionaryType.getSymbol() + value + "\n");
                 bufferedWriter.flush();
             } catch (IOException e) {
+                e.printStackTrace();
             }
             return Dictionary.ADD_KEY;
         } else {
@@ -48,13 +62,13 @@ public class FileOperation implements ChoiceOfAction {
     }
 
     @Override
-    public String removeRecord(String key)  {
+    public String removeRecord(String key) {
         boolean deleteLine = false;
         String[] readLines = fileReading().split("\n");
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path))) {
-            for (int i = 0; i < readLines.length; i++) {
-                if (!key.equals(readLines[i].split(DictionaryType.getSymbol())[0])) {
-                    bufferedWriter.write(readLines[i] + "\n");
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile()))) {
+            for (String readLine : readLines) {
+                if (!key.equals(readLine.split(DictionaryType.getSymbol())[0])) {
+                    bufferedWriter.write(readLine + "\n");
                 } else {
                     deleteLine = true;
                 }
@@ -72,14 +86,12 @@ public class FileOperation implements ChoiceOfAction {
 
     @Override
     public String search(String key) {
-
         String[] stringsSearch = fileReading().split("\n");
-
-            for (int i = 0; i < stringsSearch.length; i++) {
-                if (key.equals(stringsSearch[i].split(DictionaryType.getSymbol())[0])) {
-                   return stringsSearch[i];
-                }
+        for (String search : stringsSearch) {
+            if (key.equals(search.split(DictionaryType.getSymbol())[0])) {
+                return search;
             }
-    return Dictionary.NO_KEY;
+        }
+        return Dictionary.NO_KEY;
     }
 }

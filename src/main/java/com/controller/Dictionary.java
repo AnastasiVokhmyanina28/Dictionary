@@ -1,30 +1,26 @@
 package com.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
 import com.model.DictionaryStorage;
 import com.view.Console;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class Dictionary implements ChoiceOfAction {
     public static final String NO_KEY = "No key found!";
     public static final String SIMILARITY_TO_THE_PATTERN = "No matches with the template were found!";
     public static final String ADD_KEY = "The key has been successfully added!";
     public static final String KEY_DOES_NOT_EXIST = "This key does not exist!";
-    private Map<String, String> localMap;
-    private DictionaryStorage dictionaryStorage;
-    private DictionaryType dictionaryType;
-    @Autowired
-    private Map<DictionaryType, Validator> validator;
+    private final Map<String, String> localMap;
+    private final DictionaryStorage dictionaryStorage;
+    private final Validator validator;
 
 
-    @Autowired
-    public Dictionary(@Qualifier("map")DictionaryType dictionaryType) {
-        this.dictionaryType = dictionaryType;
+    public Dictionary(DictionaryType dictionaryType) {
+        this.validator = new Validator(dictionaryType.getPatternKey(), dictionaryType.getPatternValue());
         this.dictionaryStorage = new DictionaryStorage(dictionaryType.getDictionaryPath());
         localMap =  dictionaryStorage.getData();
     }
@@ -32,7 +28,6 @@ public class Dictionary implements ChoiceOfAction {
     public void saveData() {
         dictionaryStorage.saveData();
     }
-
 
     @Override
     public String removeRecord(String key)  {
@@ -49,17 +44,25 @@ public class Dictionary implements ChoiceOfAction {
     public String fileReading(){
         StringBuilder dictionaryContent = new StringBuilder();
         for (Map.Entry<String,String> pair : localMap.entrySet()) {
-            dictionaryContent.append(pair.getKey() + DictionaryType.getSymbol() + pair.getValue() + "\n" ) ;
+            dictionaryContent.append(pair.getKey()).append(DictionaryType.getSymbol()).append(pair.getValue()).append("\n");
         }
         return dictionaryContent.toString();
+    }
+
+    @Override
+    public List<String> fileReadingList() {
+        List<String> dictionaryContent = new ArrayList<>();
+        for (Map.Entry<String,String> pair : localMap.entrySet()) {
+            dictionaryContent.add(pair.getKey() + DictionaryType.getSymbol() + pair.getValue()  ) ;
+        }
+        return dictionaryContent;
     }
 
     @Override
     public String search(String key) {
         String search = localMap.get(key);
         if (search != null) {
-            String searchResult = key + DictionaryType.getSymbol() + search;
-            return searchResult;
+            return  key + DictionaryType.getSymbol() + search;
         } else {
             return KEY_DOES_NOT_EXIST;
         }
@@ -68,7 +71,7 @@ public class Dictionary implements ChoiceOfAction {
 
     @Override
     public String addAnEntry(String key, String value) {
-        if (validator.get(dictionaryType).validPair(key, value)) {
+        if (validator.validPair(key, value)) {
             localMap.put(key, value);
             saveData();
             return ADD_KEY;
