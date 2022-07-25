@@ -7,7 +7,6 @@ import com.model.DictionaryType;
 import com.controller.Dictionary;
 import com.controller.ChoiceOfAction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class Console {
 
@@ -88,7 +87,7 @@ public class Console {
     private void chooseDictionary(int chosenAction) {
         this.dictionary = mapDictionaries.get(chosenAction);
     }
-  
+
     public int choiceOfAction() {
         System.out.println(SELECT_THE_COMMAND + DictionaryType.getSymbol());
         System.out.println(READ);

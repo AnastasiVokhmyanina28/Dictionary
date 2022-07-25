@@ -1,13 +1,13 @@
 package com.controller;
 
 import com.model.DictionaryType;
+import com.view.Console;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +18,6 @@ public class ControllerRest {
 
     @Autowired
     private Map<Integer, DictionaryType> dictionaryTypeMaps;
-
 
     public ChoiceOfAction dictionaryType(Integer choiceDictionary, String systemChoice) {
 
@@ -40,17 +39,19 @@ public class ControllerRest {
         return new ResponseEntity<>(ReadMethodCall, HttpStatus.OK);
     }
 
-
     @Operation(summary = "remove", description = "Allows you to delete data from the dictionary")
     @PostMapping("delete")
     @ResponseBody
     public ResponseEntity<?> removeRecord(@RequestParam(value = "choiceDictionary") Integer choiceDictionary,
                                           @RequestParam(value = "systemChoice") String systemChoice,
                                           @RequestParam(value = "key") String key) {
-
         ChoiceOfAction dictionary = dictionaryType(choiceDictionary, systemChoice);
         String delete = dictionary.removeRecord(key);
-        return new ResponseEntity<>(delete, HttpStatus.OK);
+            if (delete.equals(Console.KEY_DELETE)){
+                return new ResponseEntity<>(delete, HttpStatus.OK);
+    } else {
+                return  new ResponseEntity<>(delete, HttpStatus.NOT_FOUND);
+            }
     }
 
     @Operation(summary = "search", description = "Allows you to search data from the dictionary")
@@ -61,7 +62,11 @@ public class ControllerRest {
                                     @RequestParam(value = "key") String key) {
         ChoiceOfAction dictionary = dictionaryType(choiceDictionary, systemChoice);
         String search = dictionary.search(key);
-        return new ResponseEntity<>(search, HttpStatus.OK);
+        if (search.equals(Dictionary.NO_KEY)) {
+            return new ResponseEntity<>(search, HttpStatus.NOT_FOUND );
+        } else {
+            return new ResponseEntity<>(search, HttpStatus.OK);
+        }
     }
 
     @Operation(summary = "add", description = "Allows you to add data to the dictionary")
@@ -73,6 +78,10 @@ public class ControllerRest {
                                  @RequestParam(value = "value") String value) {
         ChoiceOfAction dictionary = dictionaryType(choiceDictionary, systemChoice);
         String add = dictionary.addAnEntry(key, value);
+        if (add.equals(Dictionary.ADD_KEY)){
         return new ResponseEntity<>(add, HttpStatus.OK);
+    } else {
+            return new ResponseEntity<>(add, HttpStatus.NOT_FOUND);
+        }
     }
 }
