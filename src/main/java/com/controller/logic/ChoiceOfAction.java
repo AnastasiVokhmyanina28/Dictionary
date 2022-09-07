@@ -1,4 +1,6 @@
-package com.controller;
+package com.controller.logic;
+import com.model.dto.ListOfDictionaries;
+
 import java.util.List;
 public interface ChoiceOfAction {
     String removeRecord(String key) ;

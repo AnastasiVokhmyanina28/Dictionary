@@ -1,7 +1,8 @@
-package com.controller;
+package com.controller.logic;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.view.Console;
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
@@ -94,4 +95,6 @@ public class FileOperation implements ChoiceOfAction {
         }
         return Dictionary.NO_KEY;
     }
+
+
 }

@@ -6,8 +6,10 @@
 </head>
 <body>
 
+
 <table>
     <h3>Contents of the dictionary</h3>
+
     <tr th:each="m : ${pairs}">
         <td th:text="${m}">key</td>
     </tr>

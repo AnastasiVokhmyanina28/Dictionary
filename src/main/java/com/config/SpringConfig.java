@@ -1,6 +1,6 @@
 package com.config;
-import com.controller.Dictionary;
-import com.controller.FileOperation;
+import com.controller.logic.Dictionary;
+import com.controller.logic.FileOperation;
 import com.model.DictionaryStorage;
 import com.model.DictionaryType;
 import com.view.Console;

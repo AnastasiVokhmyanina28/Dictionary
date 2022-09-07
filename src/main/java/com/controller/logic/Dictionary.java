@@ -1,17 +1,15 @@
-package com.controller;
+package com.controller.logic;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
 import com.model.DictionaryStorage;
+import com.model.dto.ListOfDictionaries;
 import com.view.Console;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-@Component
 public class Dictionary implements ChoiceOfAction {
     public static final String NO_KEY = "No key found!";
     public static final String SIMILARITY_TO_THE_PATTERN = "No matches with the template were found!";
@@ -21,8 +19,7 @@ public class Dictionary implements ChoiceOfAction {
     private final DictionaryStorage dictionaryStorage;
     private final Validator validator;
 
-    @Autowired
-    public Dictionary(@Qualifier("map")DictionaryType dictionaryType) {
+    public Dictionary(DictionaryType dictionaryType) {
         this.validator = new Validator(dictionaryType.getPatternKey(), dictionaryType.getPatternValue());
         this.dictionaryStorage = new DictionaryStorage(dictionaryType.getDictionaryPath());
         localMap =  dictionaryStorage.getData();
@@ -48,7 +45,7 @@ public class Dictionary implements ChoiceOfAction {
     public String fileReading(){
         StringBuilder dictionaryContent = new StringBuilder();
         for (Map.Entry<String,String> pair : localMap.entrySet()) {
-            dictionaryContent.append(pair.getKey() + DictionaryType.getSymbol() + pair.getValue() + "\n" ) ;
+            dictionaryContent.append(pair.getKey()).append(DictionaryType.getSymbol()).append(pair.getValue()).append("\n");
         }
         return dictionaryContent.toString();
     }
@@ -83,5 +80,8 @@ public class Dictionary implements ChoiceOfAction {
             return SIMILARITY_TO_THE_PATTERN;
         }
     }
+
+
+
 
 }

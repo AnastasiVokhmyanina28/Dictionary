@@ -1,5 +1,8 @@
-package com.controller;
+package com.controller.controllers;
 
+import com.controller.logic.ChoiceOfAction;
+import com.controller.logic.Dictionary;
+import com.controller.logic.FileOperation;
 import com.model.DictionaryType;
 import com.view.Console;
 import io.swagger.v3.oas.annotations.Operation;

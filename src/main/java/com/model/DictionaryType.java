@@ -1,8 +1,6 @@
 package com.model;
 
-
 public class DictionaryType {
-
     private static final String splitChar = ":";
     private final String patternKey;
     private final String patternValue;

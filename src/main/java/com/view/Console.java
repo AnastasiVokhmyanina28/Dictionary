@@ -2,10 +2,10 @@ package com.view;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import com.controller.FileOperation;
+import com.controller.logic.FileOperation;
 import com.model.DictionaryType;
-import com.controller.Dictionary;
-import com.controller.ChoiceOfAction;
+import com.controller.logic.Dictionary;
+import com.controller.logic.ChoiceOfAction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Console {
@@ -28,6 +28,7 @@ public class Console {
     public static final String SYSTEM = " Choose a system";
     public static final String MAP_DICTIONARY = "\t1 Work with map";
     public static final String FILE_DICTIONARY = "\t2 Work with file";
+    private final int userСhoice = 1;
     private final Scanner scanner;
     private ChoiceOfAction dictionary = null;
     private Map<Integer, ChoiceOfAction> mapDictionaries;
@@ -50,7 +51,7 @@ public class Console {
     private void systemSelection(int choice) {
         Map<Integer, ChoiceOfAction> dictionaries = new HashMap<>();
         for (Map.Entry<Integer, DictionaryType> pair : dictionaryTypeMaps.entrySet()) {
-            if (choice == 1) {
+            if (choice == userСhoice) {
                 dictionaries.put(pair.getKey(), new Dictionary(pair.getValue()));
             }
             else {
@@ -66,7 +67,7 @@ public class Console {
          }
         while (dictionary == null) {
             int dictionarySelection = this.menuChoiceDictionary();
-            if (mapDictionaries != null) {
+            if (!mapDictionaries.isEmpty()) {
                 chooseDictionary(dictionarySelection);
             }
         }
@@ -126,7 +127,6 @@ public class Console {
                 System.out.println(ENTER_VALUE);
                 String value = scanner.next();
                 System.out.println(dictionary.addAnEntry(key, value));
-
                 break;
             case 5:
                 this.dictionary = null;
