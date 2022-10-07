@@ -1,17 +1,8 @@
 package com.model.dto;
 
-import com.sun.jdi.PrimitiveValue;
-
-import javax.persistence.*;
-
-//@Entity
-//@Table(name = "dictionaries")
 public class ListOfDictionaries {
-    //    @Id
-//    @Column(name = "id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-    //@Column(name = "dictionary")
     private String dictionary;
     private String template;
 

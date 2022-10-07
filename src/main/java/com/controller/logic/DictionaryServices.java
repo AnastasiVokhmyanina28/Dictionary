@@ -1,14 +1,15 @@
-package com.services.dao;
+package com.controller.logic;
 
-import com.controller.logic.ChoiceOfAction;
-import com.controller.logic.Dictionary;
 import com.model.dto.MeaningsLyingInTheDictionary;
+import com.services.dao.DictionaryDao;
+import com.services.dao.DictionaryValuesDAO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class DictionaryServices implements ChoiceOfAction {
+
     public DictionaryServices(DictionaryValuesDAO dictionaryValuesDAO, DictionaryDao dictionaryDAO, String dictionaryFrom, String dictionaryTo) {
         this.dictionaryValuesDAO = dictionaryValuesDAO;
         this.dictionaryDAO = dictionaryDAO;

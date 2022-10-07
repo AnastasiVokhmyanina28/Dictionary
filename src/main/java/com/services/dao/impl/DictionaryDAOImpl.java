@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 public class DictionaryDAOImpl implements DictionaryDao {
 
-    private   JdbcConfig jdbcConfig;
+    private JdbcConfig jdbcConfig;
     @Autowired
     public DictionaryDAOImpl(JdbcConfig jdbcConfig) {
         this.jdbcConfig = jdbcConfig;

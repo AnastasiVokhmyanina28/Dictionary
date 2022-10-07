@@ -22,5 +22,4 @@ public class Validator implements ValidationValue {
     public boolean validPair(String key, String value){
         return (keyCheck(key) && valueCheck(value));
     }
-
 }

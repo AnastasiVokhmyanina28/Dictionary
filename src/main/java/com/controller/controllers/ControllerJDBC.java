@@ -2,16 +2,12 @@ package com.controller.controllers;
 
 import com.config.JdbcConfig;
 import com.controller.logic.ChoiceOfAction;
-import com.controller.logic.Dao;
 import com.controller.logic.Dictionary;
 import com.controller.logic.FileOperation;
 import com.model.DictionaryType;
-import com.model.dto.ListOfDictionaries;
 import com.services.dao.DictionaryDao;
-import com.services.dao.DictionaryServices;
+import com.controller.logic.DictionaryServices;
 import com.services.dao.DictionaryValuesDAO;
-import com.services.dao.impl.DictionaryDAOImpl;
-import com.services.dao.impl.DictionaryValuesDAOImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller

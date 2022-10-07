@@ -3,6 +3,7 @@ package com.services.dao.impl;
 import com.config.JdbcConfig;
 import com.model.dto.IntermediateTable;
 import com.services.dao.WordsDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WordsDAOImpl implements WordsDAO {
+    @Autowired
     private JdbcConfig jdbcConfig;
 
     public List<IntermediateTable> getIntermediateTable() {

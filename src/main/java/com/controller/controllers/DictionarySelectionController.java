@@ -1,19 +1,15 @@
 package com.controller.controllers;
 
-import com.config.JdbcConfig;
 import com.controller.logic.*;
 import com.model.DictionaryType;
-import com.model.dto.ListOfDictionaries;
 import com.services.dao.DictionaryDao;
-import com.services.dao.DictionaryServices;
+import com.controller.logic.DictionaryServices;
 import com.services.dao.DictionaryValuesDAO;
-import com.services.dao.impl.DictionaryDAOImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -22,8 +18,7 @@ public class DictionarySelectionController {
 
     @Autowired
     private Map<Integer, DictionaryType> dictionaryTypeMaps;
-    @Autowired
-    private JdbcConfig jdbcConfig;
+
     private ChoiceOfAction dictionary;
     @Autowired
     private DictionaryValuesDAO dictionaryValuesDAO;
@@ -56,6 +51,7 @@ public class DictionarySelectionController {
                 break;
             case "jdbc":
                 dictionary = new DictionaryServices(dictionaryValuesDAO, dictionaryDao, "English", "Russian");
+
                 return "SelectingADictionaryDAO";
             case "file":
                 dictionary = new FileOperation(dictionaryTypeMaps.get(choiceDictionary));

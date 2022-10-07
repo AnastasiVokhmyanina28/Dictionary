@@ -4,16 +4,22 @@ import com.controller.logic.FileOperation;
 import com.model.DictionaryStorage;
 import com.model.DictionaryType;
 import com.view.Console;
+import liquibase.integration.spring.SpringLiquibase;
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.context.ApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import javax.sql.DataSource;
+import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 @Import({
@@ -29,12 +35,23 @@ import java.util.Map;
 @EnableWebMvc
 @ComponentScan("com")
 @PropertySource("classpath:config.properties")
+@PropertySource("application.properties")
 public class SpringConfig implements WebMvcConfigurer {
     @Value("#{${valuesMap}}")
     private Map<Integer, String> dictionaryTypeMap;
     private final ApplicationContext applicationContext;
     @Value("${divider}")
     private String lineDelimiter;
+
+    @Value("${url}")
+    private String url;
+    @Value("${user}")
+    private String user;
+    @Value("${password}")
+    private String password;
+
+    @Value("${driver}")
+    private String driver;
 
     @Autowired
     public SpringConfig(ApplicationContext applicationContext) {
@@ -108,4 +125,28 @@ public class SpringConfig implements WebMvcConfigurer {
     public Console getConsole() {
         return new Console();
     }
+    @Bean
+    public SpringLiquibase liquibase() {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setDataSource(dataSource());
+        liquibase.setChangeLog("classpath:database/changelog/liquibase-changelog.xml");
+        return liquibase;
+    }
+
+    @Bean
+    public DataSource dataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driver);
+        dataSource.setPassword(password);
+        dataSource.setUrl(url);
+        dataSource.setUsername(user);
+        return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(){
+        return new JdbcTemplate(dataSource());
+    }
+
+
 }

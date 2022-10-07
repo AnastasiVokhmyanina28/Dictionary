@@ -17,7 +17,7 @@ public class DictionaryValuesDAOImpl implements DictionaryValuesDAO {
     @Autowired
     private JdbcConfig config;
 
-    private final String aCoupleExists = "This pairing exists";
+    private final String A_COUPLE_EXISTS = "This pairing exists";
     private final String p = "No matches with the template were found";
 
     private WordsDAOImpl dao;
@@ -78,10 +78,10 @@ public class DictionaryValuesDAOImpl implements DictionaryValuesDAO {
                 addingARowToATable(word, translation, wordId, translationId); // метод записи
                 System.out.println("The pair has been successfully added"); // сделала текстом, чтоб было понятнее
             } else {
-                System.out.println(aCoupleExists);
+                System.out.println(A_COUPLE_EXISTS);
             }
         } else {
-            System.out.println("No matches with the template were found");
+            System.out.println(p);
         }
 
     }
