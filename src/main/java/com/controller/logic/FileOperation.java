@@ -1,5 +1,6 @@
 package com.controller.logic;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class FileOperation implements ChoiceOfAction {
     @Override
     public String addAnEntry(String key, String value) {
         if (validator.validPair(key, value)) {
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile(), flexibility))) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new ClassPathResource(path).getFile(), StandardCharsets.UTF_8, flexibility))) {
                 bufferedWriter.write(key + DictionaryType.getSymbol() + value + "\n");
                 bufferedWriter.flush();
             } catch (IOException e) {

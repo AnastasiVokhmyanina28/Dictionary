@@ -1,7 +1,5 @@
 package com.services.dao.impl;
 
-import com.model.dto.Language;
-import com.model.dto.Word;
 import com.services.dao.WordDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

@@ -5,6 +5,9 @@ import com.model.DictionaryType;
 import com.services.dao.DictionaryDao;
 import com.controller.logic.DictionaryServices;
 import com.services.dao.DictionaryValuesDAO;
+import com.services.dao.impl.LanguageDaoImpl;
+import com.services.dao.impl.RowDaoImpl;
+import com.services.dao.impl.WordDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,25 +18,40 @@ import java.util.Map;
 @Controller
 @RequestMapping("dictionary")
 public class DictionarySelectionController {
+    private String choiseSystem = "";
 
     @Autowired
     private Map<Integer, DictionaryType> dictionaryTypeMaps;
+    private RowDaoImpl row;
+    private WordDaoImpl word;
 
     private ChoiceOfAction dictionary;
     @Autowired
     private DictionaryValuesDAO dictionaryValuesDAO;
     @Autowired
     private DictionaryDao dictionaryDao;
-
-    @GetMapping("dictionaries")
-    public String chooseDictionary() {
-        return "SelectingADictionary";
-    }
+    
 
     @GetMapping("system")
     public String selectingASysteam() {
         return "SelectingASysteam";
     }
+
+
+    @PostMapping("choiseSystem")
+    public String selectingASysteam(@RequestParam(name = "systemChoice") String systemChoice
+            //,
+            //                        @RequestParam(name = "dictionaryFrom") String dictionaryFrom,
+                          //          @RequestParam(name = "dictionaryTo") String dictionaryTo
+    ) {
+        if (systemChoice.equals("jdbc")){
+            dictionary = new  DictionaryServices(dictionaryValuesDAO, dictionaryDao, "English", "Russian");
+            return "SelectingADictionaryDAO";
+        }
+            this.choiseSystem = systemChoice;
+            return "SelectingADictionaryMapFile";
+    }
+
 
     @GetMapping("selection")
     public String dictionarySelection() {
@@ -42,17 +60,13 @@ public class DictionarySelectionController {
 
 
     @PostMapping("selection")
-    public String dictionarySelection(@RequestParam(name = "choiceDictionary") Integer choiceDictionary,
-                                      @RequestParam(name = "systemChoice") String systemChoice,
-                                      Model model) {
-        switch (systemChoice) {
+    public String dictionarySelection(@RequestParam(name = "choiceDictionary") Integer choiceDictionary
+
+    ) {
+        switch (choiseSystem) {
             case "map":
                 dictionary = new Dictionary(dictionaryTypeMaps.get(choiceDictionary));
                 break;
-            case "jdbc":
-                dictionary = new DictionaryServices(dictionaryValuesDAO, dictionaryDao, "English", "Russian");
-
-                return "SelectingADictionaryDAO";
             case "file":
                 dictionary = new FileOperation(dictionaryTypeMaps.get(choiceDictionary));
                 break;
@@ -77,6 +91,9 @@ public class DictionarySelectionController {
         model.addAttribute("remove", dictionary.removeRecord(key));
         return "Delete";
     }
+
+
+
 
     @GetMapping("add")
     public String addAnEntry() {

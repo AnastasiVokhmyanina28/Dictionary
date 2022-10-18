@@ -3,11 +3,9 @@ package com.controller.logic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.controller.validation.Validator;
 import com.model.DictionaryType;
 import com.model.DictionaryStorage;
-import com.model.dto.ListOfDictionaries;
 import com.view.Console;
 
 public class Dictionary implements ChoiceOfAction {
