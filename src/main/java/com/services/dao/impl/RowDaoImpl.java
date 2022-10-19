@@ -1,28 +1,30 @@
 package com.services.dao.impl;
 
+import com.model.Mapper;
 import com.model.dto.Row;
 import com.services.dao.RowDAO;
-import liquibase.pro.packaged.O;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-
+import org.springframework.stereotype.Component;
 import java.util.List;
-
+@Component
 public class RowDaoImpl implements RowDAO {
     private final WordDaoImpl word;
+    @Autowired
+    private LanguageDaoImpl languageDao;
     private final JdbcTemplate jdbcTemplate;
     private final String NOT_KEY = "THIS KEY WAS NOT FOUND";
     private final String DELETE_ROW = "The line is successfully deleted!";
     private int dictionaryIdFromWhichToTranslate;
     private int isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed;
 
-    public void setDictionaryIdFromWhichToTranslate(int dictionaryIdFromWhichToTranslate) {
-        this.dictionaryIdFromWhichToTranslate = dictionaryIdFromWhichToTranslate;
+    public void setDictionaryIdFromWhichToTranslate(String dictionaryIdFromWhichToTranslate) {
+        this.dictionaryIdFromWhichToTranslate = languageDao.getIdLanguage(dictionaryIdFromWhichToTranslate);
     }
 
-    public void setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(int isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) {
-        this.isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed = isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed;
+    public void setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(String isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) {
+        this.isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed = languageDao.getIdLanguage(isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed);
     }
 
 
@@ -49,7 +51,7 @@ public class RowDaoImpl implements RowDAO {
 
     //вывод пар конкретного словаря
     public List<String> fileReadingList() {
-        return jdbcTemplate.query(THE_LIST_OF_PAIRS, new Object[]{dictionaryIdFromWhichToTranslate, isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed}, new BeanPropertyRowMapper<>(String.class));
+        return jdbcTemplate.query(THE_LIST_OF_PAIRS, new Object[]{dictionaryIdFromWhichToTranslate, isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed}, new Mapper());
     }
 
     //заменить id  на слова

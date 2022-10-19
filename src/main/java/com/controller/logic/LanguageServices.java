@@ -2,14 +2,17 @@ package com.controller.logic;
 
 import com.services.dao.impl.RowDaoImpl;
 import com.services.dao.impl.WordDaoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.AbstractMap;
 import java.util.List;
 
+@Component
 public class LanguageServices implements ChoiceOfAction {
-
+    @Autowired
     private RowDaoImpl row;
-
+        @Autowired
     private WordDaoImpl word;
 
     public RowDaoImpl getRow() {
@@ -20,10 +23,6 @@ public class LanguageServices implements ChoiceOfAction {
         return word;
     }
 
-    public LanguageServices(RowDaoImpl row, WordDaoImpl word) {
-        this.row = row;
-        this.word = word;
-    }
 
     @Override
     public String search(String name) {

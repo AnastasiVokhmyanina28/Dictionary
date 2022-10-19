@@ -4,20 +4,23 @@ import com.services.dao.WordDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.AbstractMap;
 import java.util.regex.Pattern;
-
+@Component
 public class WordDaoImpl implements WordDAO {
     private int dictionaryIdFromWhichToTranslate;
     private int isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed;
+    @Autowired
+    private LanguageDaoImpl languageDao;
 
-    public void setDictionaryIdFromWhichToTranslate(int dictionaryIdFromWhichToTranslate) {
-        this.dictionaryIdFromWhichToTranslate = dictionaryIdFromWhichToTranslate;
+    public void setDictionaryIdFromWhichToTranslate(String dictionaryIdFromWhichToTranslate) {
+        this.dictionaryIdFromWhichToTranslate = languageDao.getIdLanguage(dictionaryIdFromWhichToTranslate) ;
     }
 
-    public void setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(int isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) {
-        this.isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed = isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed;
+    public void setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(String isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) {
+        this.isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed = languageDao.getIdLanguage(isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) ;
     }
 
 

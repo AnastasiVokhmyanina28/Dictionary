@@ -3,11 +3,7 @@ package com.controller.controllers;
 import com.controller.logic.*;
 import com.model.DictionaryType;
 import com.services.dao.DictionaryDao;
-import com.controller.logic.DictionaryServices;
 import com.services.dao.DictionaryValuesDAO;
-import com.services.dao.impl.LanguageDaoImpl;
-import com.services.dao.impl.RowDaoImpl;
-import com.services.dao.impl.WordDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,15 +18,15 @@ public class DictionarySelectionController {
 
     @Autowired
     private Map<Integer, DictionaryType> dictionaryTypeMaps;
-    private RowDaoImpl row;
-    private WordDaoImpl word;
 
     private ChoiceOfAction dictionary;
     @Autowired
     private DictionaryValuesDAO dictionaryValuesDAO;
     @Autowired
     private DictionaryDao dictionaryDao;
-    
+    @Autowired
+    private LanguageServices languageServices;
+
 
     @GetMapping("system")
     public String selectingASysteam() {
@@ -39,17 +35,23 @@ public class DictionarySelectionController {
 
 
     @PostMapping("choiseSystem")
-    public String selectingASysteam(@RequestParam(name = "systemChoice") String systemChoice
+    public String selectingASysteam(@RequestParam(name = "systemChoice") String systemChoice)
             //,
-            //                        @RequestParam(name = "dictionaryFrom") String dictionaryFrom,
-                          //          @RequestParam(name = "dictionaryTo") String dictionaryTo
-    ) {
-        if (systemChoice.equals("jdbc")){
-            dictionary = new  DictionaryServices(dictionaryValuesDAO, dictionaryDao, "English", "Russian");
+                                 //   @RequestParam(name = "dictionaryFrom") String dictionaryFrom,
+                                 //   @RequestParam(name = "dictionaryTo") String dictionaryTo)
+                                    {
+        if (systemChoice.equals("jdbc")) {
+            String dictionaryFrom = "Russian";
+            String dictionaryTo = "English";
+            languageServices.getWord().setDictionaryIdFromWhichToTranslate(dictionaryFrom);
+            languageServices.getWord().setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(dictionaryTo);
+            languageServices.getRow().setDictionaryIdFromWhichToTranslate(dictionaryFrom);
+            languageServices.getRow().setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(dictionaryTo);
+            dictionary = languageServices;
             return "SelectingADictionaryDAO";
         }
-            this.choiseSystem = systemChoice;
-            return "SelectingADictionaryMapFile";
+        this.choiseSystem = systemChoice;
+        return "SelectingADictionaryMapFile";
     }
 
 
@@ -91,8 +93,6 @@ public class DictionarySelectionController {
         model.addAttribute("remove", dictionary.removeRecord(key));
         return "Delete";
     }
-
-
 
 
     @GetMapping("add")
