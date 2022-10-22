@@ -28,7 +28,6 @@ public class LanguageServices implements ChoiceOfAction {
     public String search(String name) {
         return row.lineСheck(name).toString();
     }
-
     @Override
     public List<String> fileReadingList() {
         return row.fileReadingList();

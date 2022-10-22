@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Search</title>
@@ -11,13 +11,19 @@
     <label>
         <input type="text" name="key">
     </label><br>
-    <tr th:text="${search}">key</tr> <br>
+    <table>
+<!--        <tr th:text="${search}">key</tr>-->
+
+        <tr th:each="m : ${search}">
+            <td th:text="${m}">key</td>
+    </table>
+
     <p><input type="submit" value="Send"></p>
-    <br>
+
 </form>
 
-<form action="/dictionary/selection" >
-    <p><input type="submit"  value="Back" ></p>
+<form action="/dictionary/selection">
+    <p><input type="submit" value="Back"></p>
 </form>
 </body>
 </html>

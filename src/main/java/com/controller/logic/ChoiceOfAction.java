@@ -1,5 +1,4 @@
 package com.controller.logic;
-import com.model.dto.ListOfDictionaries;
 
 import java.util.List;
 public interface ChoiceOfAction {
@@ -8,4 +7,5 @@ public interface ChoiceOfAction {
     String addAnEntry(String key, String value);
     String fileReading();
     List <String> fileReadingList();
+
 }

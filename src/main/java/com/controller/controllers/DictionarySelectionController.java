@@ -2,8 +2,6 @@ package com.controller.controllers;
 
 import com.controller.logic.*;
 import com.model.DictionaryType;
-import com.services.dao.DictionaryDao;
-import com.services.dao.DictionaryValuesDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +19,6 @@ public class DictionarySelectionController {
 
     private ChoiceOfAction dictionary;
     @Autowired
-    private DictionaryValuesDAO dictionaryValuesDAO;
-    @Autowired
-    private DictionaryDao dictionaryDao;
-    @Autowired
     private LanguageServices languageServices;
 
 
@@ -41,8 +35,8 @@ public class DictionarySelectionController {
                                  //   @RequestParam(name = "dictionaryTo") String dictionaryTo)
                                     {
         if (systemChoice.equals("jdbc")) {
-            String dictionaryFrom = "Russian";
-            String dictionaryTo = "English";
+            String dictionaryFrom = "English";
+            String dictionaryTo = "Russian";
             languageServices.getWord().setDictionaryIdFromWhichToTranslate(dictionaryFrom);
             languageServices.getWord().setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(dictionaryTo);
             languageServices.getRow().setDictionaryIdFromWhichToTranslate(dictionaryFrom);

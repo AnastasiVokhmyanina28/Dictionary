@@ -32,7 +32,11 @@ public class WordDaoImpl implements WordDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //id слова
+    /**
+     * узнать id слова
+     * @param name
+     * @return
+     */
     @Override
     public Integer getIdWord(String name) {
         return jdbcTemplate.queryForObject("select id from word where name = ?", new Object[]{name}, Integer.class);
