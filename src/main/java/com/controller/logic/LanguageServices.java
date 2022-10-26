@@ -10,6 +10,8 @@ import java.util.List;
 
 @Component
 public class LanguageServices implements ChoiceOfAction {
+    private final String ERROR = "Ошибка! Проверьте корректность вводимых данных!";
+    private final String  ADD_PAIR = "Pair successfully added!";
     @Autowired
     private RowDaoImpl row;
         @Autowired
@@ -42,10 +44,10 @@ public class LanguageServices implements ChoiceOfAction {
     public String addAnEntry(String key, String value) {
         AbstractMap.SimpleEntry<Integer, Integer> pair = word.add(key, value);
         if (pair == null) {
-            return "error";
+            return ERROR;
         } else {
             if (row.isThereACoupleOf(pair.getKey(), pair.getValue())) {
-                return "добавлвила";
+                return ADD_PAIR;
             } else {
                 return "пара есть атстань";
             }
