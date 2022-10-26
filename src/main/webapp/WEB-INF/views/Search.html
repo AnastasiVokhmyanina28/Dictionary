@@ -12,8 +12,6 @@
         <input type="text" name="key">
     </label><br>
     <table>
-<!--        <tr th:text="${search}">key</tr>-->
-
         <tr th:each="m : ${search}">
             <td th:text="${m}">key</td>
     </table>

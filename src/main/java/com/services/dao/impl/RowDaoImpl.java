@@ -21,7 +21,6 @@ public class RowDaoImpl implements RowDAO {
     private final JdbcTemplate jdbcTemplate;
     private final String NOT_KEY = "THIS KEY WAS NOT FOUND";
     private final String DELETE_ROW = "The line is successfully deleted!";
-    private final String str = null;
     private int dictionaryIdFromWhichToTranslate;
     private int isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed;
 
@@ -87,7 +86,7 @@ public class RowDaoImpl implements RowDAO {
      */
     @Override
     public List<Row> getRows() {
-        return jdbcTemplate.query("select key_word_id, value_word_id from row", new BeanPropertyRowMapper<>(Row.class));
+        return jdbcTemplate.query("select key_word_id, value_word_id from row", new Mapper());
     }
 
     /**
@@ -119,7 +118,7 @@ public class RowDaoImpl implements RowDAO {
      */
     @Override
     public void add(int key_word_id, int value_word_id) {
-        jdbcTemplate.update("insert into row(key_word_id, value_word_id) values (?, ?)", new Object[]{key_word_id, value_word_id}, new Mapper());
+        jdbcTemplate.update("insert into row(key_word_id, value_word_id) values (?, ?)", new Object[]{key_word_id, value_word_id});
     }
 
     /**
@@ -131,7 +130,7 @@ public class RowDaoImpl implements RowDAO {
     // ПЕРЕДЕЛАТЬ НА ДРУГОЙ МЕТОД
     public List<String> lineСheck(String name) {
         Integer idWord = word.getIdWord(name); // узнали id слова
-        if (idWord.equals(null)) {
+        if (idWord == null) {
             return null;
         }
         return search(idWord);
@@ -146,13 +145,12 @@ public class RowDaoImpl implements RowDAO {
     public String removeRecord(String name) {
         Integer idWord = word.getIdWord(name);
         if (idWord != null) {
-            delete(idWord);
+            delete(idWord);// отработало
             deleteWord(idWord);
             return DELETE_ROW;
         } else {
             return NOT_KEY;
         }
-
     }
 
     /**
@@ -162,7 +160,7 @@ public class RowDaoImpl implements RowDAO {
      * @return
      */
     private Integer rowСount(int value_word_id) {
-        return jdbcTemplate.queryForObject("select count(value_word_id) from row where value_word_id = ?", new Object[]{value_word_id}, new BeanPropertyRowMapper<>(Integer.class));
+        return jdbcTemplate.queryForObject("select count(value_word_id) from row where value_word_id = ?", new Object[]{value_word_id}, Integer.class);
     }
 
     /**
@@ -183,7 +181,7 @@ public class RowDaoImpl implements RowDAO {
      * @param value_word_id
      */
     public void deleteRowWord(int value_word_id) {
-        jdbcTemplate.update("delete from word where value_word_id = ?", value_word_id);
+        jdbcTemplate.update("delete from word where id = ?", value_word_id);
     }
 
     /**
@@ -205,7 +203,7 @@ public class RowDaoImpl implements RowDAO {
      */
     //проверка есть ли id в столбце ключей
     public Integer searchKey(int key_word_id) {
-        return jdbcTemplate.queryForObject("select count (key_word_id) from row where key_word_id = ?", new Object[]{key_word_id}, new BeanPropertyRowMapper<>(Integer.class));
+        return jdbcTemplate.queryForObject("select count (key_word_id) from row where key_word_id = ?", new Object[]{key_word_id}, Integer.class);
     }
 
     /**

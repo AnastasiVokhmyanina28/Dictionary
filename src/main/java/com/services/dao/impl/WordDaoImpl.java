@@ -2,7 +2,7 @@ package com.services.dao.impl;
 
 import com.services.dao.WordDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +14,7 @@ public class WordDaoImpl implements WordDAO {
     private int isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed;
     @Autowired
     private LanguageDaoImpl languageDao;
+    private final JdbcTemplate jdbcTemplate;
 
     public void setDictionaryIdFromWhichToTranslate(String dictionaryIdFromWhichToTranslate) {
         this.dictionaryIdFromWhichToTranslate = languageDao.getIdLanguage(dictionaryIdFromWhichToTranslate) ;
@@ -23,9 +24,6 @@ public class WordDaoImpl implements WordDAO {
         this.isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed = languageDao.getIdLanguage(isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) ;
     }
 
-
-    private final JdbcTemplate jdbcTemplate;
-    private LanguageDaoImpl language;
 
     @Autowired
     public WordDaoImpl(JdbcTemplate jdbcTemplate) {
@@ -39,7 +37,12 @@ public class WordDaoImpl implements WordDAO {
      */
     @Override
     public Integer getIdWord(String name) {
-        return jdbcTemplate.queryForObject("select id from word where name = ?", new Object[]{name}, Integer.class);
+        try {
+            return jdbcTemplate.queryForObject("select id from word where name = ? ", new Object[]{name}, Integer.class);
+        }
+       catch (EmptyResultDataAccessException e){
+            return null;
+       }
     }
 
     //слово по id
@@ -51,7 +54,7 @@ public class WordDaoImpl implements WordDAO {
     //добавление слова и id словаря, которому принадлежит данное слово(возвращает id только добавленной строки)
     @Override
     public Integer addWord(String name, int language_id) {
-        return jdbcTemplate.queryForObject("insert into word(name, language_id) values(?, ?) returning id", new Object[]{name, language_id}, new BeanPropertyRowMapper<>(Integer.class));
+        return jdbcTemplate.queryForObject("insert into word(name, language_id) values(?, ?) returning id", new Object[]{name, language_id}, Integer.class);
     }
 
     // поиск слова
@@ -69,14 +72,17 @@ public class WordDaoImpl implements WordDAO {
 
     //проверка ключа на шаблон
     private boolean keyCheck(String key) {
-        return Pattern.matches(language.getPattern(dictionaryIdFromWhichToTranslate), key);
+        String patternKey = languageDao.getPattern(dictionaryIdFromWhichToTranslate);
+        return Pattern.matches(patternKey, key);
     }
 
     private boolean valueCheck(String value) {
-        return Pattern.matches(language.getPattern(isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed), value);
+        return Pattern.matches(languageDao.getPattern(isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed), value);
     }
 
     public boolean validPair(String key, String value) {
+
+
         return keyCheck(key) && valueCheck(value);
     }
 //вернет пару ключей
