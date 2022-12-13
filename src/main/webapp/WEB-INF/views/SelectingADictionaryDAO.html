@@ -7,33 +7,41 @@
 <body>
 
 
-<label>
-    <select  name="dictionaryFrom" >
-        <option value="0">select dictionary</option>
+<form action="/dictionary/choiseDictionary"  target="_self">
+    <label>
+        <select  name="dictionaryFrom">
+            <option value="0">select dictionary</option>
 
-        <option th:each="dictionaries : ${array}"
-                th:value = "${dictionaries.id}"
-                th:utext= "${dictionaries.dictionary}"></option>
-    </select>
-</label>
+            <option th:each="language : ${array}"
+                    th:value = "${language.id}"
+                    th:utext= "${language.name}"></option>
+        </select>
+    </label>
 
 
-<label>
-    <select  name="dictionaryTo" >
-        <option value="0">select dictionary</option>
+    <label>
+        <select  name="dictionaryTo">
+            <option value="0">select dictionary</option>
 
-        <option th:each="dictionaries : ${array}"
-                th:value = "${dictionaries.id}"
-                th:utext= "${dictionaries.dictionary}"></option>
-    </select>
-</label>
+            <option th:each="language : ${array}"
+                    th:value = "${language.id}"
+                    th:utext= "${language.name}"></option>
+        </select>
+    </label>
+</form>
 
-<form action="/dictionary/selection" >
+
+
+
+
+
+
+<form action="/dictionary/selection">
     <p><input type="submit"  value="Выбрать" ></p>
 </form>
 
-<form action="/dictionary/system" >
-    <p><input type="submit"  value="Назад" ></p>
+<form action="/dictionary/choiseSystem">
+    <p><input type="submit"  value="Назад"></p>
 </form>
 
 </body>

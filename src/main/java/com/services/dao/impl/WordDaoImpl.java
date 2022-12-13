@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.AbstractMap;
 import java.util.regex.Pattern;
+
 @Component
 public class WordDaoImpl implements WordDAO {
     private int dictionaryIdFromWhichToTranslate;
@@ -17,11 +18,11 @@ public class WordDaoImpl implements WordDAO {
     private final JdbcTemplate jdbcTemplate;
 
     public void setDictionaryIdFromWhichToTranslate(String dictionaryIdFromWhichToTranslate) {
-        this.dictionaryIdFromWhichToTranslate = languageDao.getIdLanguage(dictionaryIdFromWhichToTranslate) ;
+        this.dictionaryIdFromWhichToTranslate = languageDao.getIdLanguage(dictionaryIdFromWhichToTranslate);
     }
 
     public void setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(String isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) {
-        this.isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed = languageDao.getIdLanguage(isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed) ;
+        this.isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed = languageDao.getIdLanguage(isTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed);
     }
 
 
@@ -32,6 +33,7 @@ public class WordDaoImpl implements WordDAO {
 
     /**
      * узнать id слова
+     *
      * @param name
      * @return
      */
@@ -39,10 +41,9 @@ public class WordDaoImpl implements WordDAO {
     public Integer getIdWord(String name) {
         try {
             return jdbcTemplate.queryForObject("select id from word where name = ? ", new Object[]{name}, Integer.class);
-        }
-       catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return null;
-       }
+        }
     }
 
     //слово по id
@@ -85,7 +86,8 @@ public class WordDaoImpl implements WordDAO {
 
         return keyCheck(key) && valueCheck(value);
     }
-//вернет пару ключей
+
+    //вернет пару ключей
     public AbstractMap.SimpleEntry<Integer, Integer> add(String key, String value) {
         if (validPair(key, value)) {
             Integer idKey = getIdWord(key);
@@ -100,7 +102,7 @@ public class WordDaoImpl implements WordDAO {
             return new AbstractMap.SimpleEntry<>(idKey, idValue);
         }
 
-      return null;
+        return null;
     }
 
 

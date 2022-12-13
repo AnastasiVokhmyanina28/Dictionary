@@ -5,7 +5,6 @@ import com.model.DictionaryStorage;
 import com.model.DictionaryType;
 import com.view.Console;
 import liquibase.integration.spring.SpringLiquibase;
-import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;

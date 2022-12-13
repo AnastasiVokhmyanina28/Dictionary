@@ -20,32 +20,49 @@ public class DictionarySelectionController {
     private ChoiceOfAction dictionary;
     @Autowired
     private LanguageServices languageServices;
+    @Autowired
+    private ListOfDictionariesServices list;
 
 
-    @GetMapping("system")
-    public String selectingASysteam() {
+    @GetMapping("choiseSystem")
+    public String selectingASystem() {
         return "SelectingASysteam";
     }
 
 
-    @PostMapping("choiseSystem")
-    public String selectingASysteam(@RequestParam(name = "systemChoice") String systemChoice)
-            //,
-                                 //   @RequestParam(name = "dictionaryFrom") String dictionaryFrom,
-                                 //   @RequestParam(name = "dictionaryTo") String dictionaryTo)
-                                    {
+    public String selectingASysteamMapAndFile(@RequestParam(name = "systemChoice") String systemChoice) {
+        this.choiseSystem = systemChoice;
+        return "SelectingADictionaryMapFile";
+
+    }
+
+
+    public String selectingASystemDataBase(@RequestParam(name = "systemChoice") String systemChoice, Model model)
+
+    //,
+    //   @RequestParam(name = "dictionaryFrom") String dictionaryFrom,
+    //   @RequestParam(name = "dictionaryTo") String dictionaryTo)
+    {
         if (systemChoice.equals("jdbc")) {
-            String dictionaryFrom = "English";
+            model.addAttribute("array", list.language()); //заполняем списки
+            String dictionaryFrom = "English"; //<- сюда строку, заполняющую список
             String dictionaryTo = "Russian";
-            languageServices.getWord().setDictionaryIdFromWhichToTranslate(dictionaryFrom);
+            languageServices.getWord().setDictionaryIdFromWhichToTranslate(dictionaryFrom); // для чего это
             languageServices.getWord().setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(dictionaryTo);
+
             languageServices.getRow().setDictionaryIdFromWhichToTranslate(dictionaryFrom);
             languageServices.getRow().setIsTheIdentifierOfTheDictionaryIntoWhichTheTranslatioIsPerformed(dictionaryTo);
             dictionary = languageServices;
-            return "SelectingADictionaryDAO";
         }
-        this.choiseSystem = systemChoice;
-        return "SelectingADictionaryMapFile";
+        return "SelectingADictionaryDAO";
+    }
+
+    @PostMapping("choiseSystem")
+    public String selectingASystem(@RequestParam(name = "systemChoice") String systemChoise, Model model) {
+        if (systemChoise.equals("map") || systemChoise.equals("file")) {
+            return selectingASysteamMapAndFile(systemChoise);
+        }
+        return selectingASystemDataBase(systemChoise, model);
     }
 
 

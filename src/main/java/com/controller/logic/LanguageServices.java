@@ -16,6 +16,8 @@ public class LanguageServices implements ChoiceOfAction {
     private RowDaoImpl row;
         @Autowired
     private WordDaoImpl word;
+        
+        
 
     public RowDaoImpl getRow() {
         return row;
